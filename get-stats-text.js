@@ -33,7 +33,14 @@ function getGuessPossibilities(answer, guesses) {
                 .map(letter => ({[letter]:true}))
                 .reduce((clueLetters, clueLetter) => ({...clueLetters, ...clueLetter}), {})
             )
-        }), {})).sort();
+        }), {})).sort().map(present => `^.*${present}.*$`);
+
+    let incorrects = guessClues
+        .map(clues => Object.keys(clues)
+            .filter(letter => clues[letter] == "present").sort()
+        )
+        .map((letters, index) => letters.length ? `^${".".repeat(index)}[^${letters.join("")}]${".".repeat(4 - index)}` : "")
+        .filter(pattern => !!pattern);
 
     let corrects = guessClues.map(clues => Object.keys(clues).filter(letter => clues[letter] == "correct")[0] || '.').join('');
 
@@ -42,7 +49,10 @@ function getGuessPossibilities(answer, guesses) {
         new RegExp(`^[^${absences}]{1,5}$`),
 
         // Patterns for each present letter
-        ...presents.map(present => new RegExp(`^.*${present}.*$`)),
+        ...presents.map(pattern => new RegExp(pattern)),
+
+        // Patterns for each present (but incorrect) letter
+        ...incorrects.map(pattern => new RegExp(pattern)),
 
         // One pattern with all correct letters
         new RegExp(`^${corrects}$`)
