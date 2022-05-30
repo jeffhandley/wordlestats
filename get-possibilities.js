@@ -66,6 +66,6 @@ let solution = game.solution;
 let guesses = game.boardState.filter(g => !!g);
 
 let possibilities = getGuessPossibilities(solution, guesses);
-let share = possibilities.length > 25 ? `${possibilities.length} words remain` : possibilities.join(", ");
+let share = possibilities.length > 25 ? `${possibilities.length.toLocaleString()} words remain` : possibilities.join(", ");
 
 completion(share);
