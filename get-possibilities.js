@@ -67,4 +67,4 @@ let guesses = ['swirl', 'touch'];
 let possibilities = getGuessPossibilities(solution, guesses);
 let share = possibilities.join(", ");
 
-console.log(share);
+completion(share);
