@@ -61,8 +61,9 @@ function getGuessPossibilities(answer, guesses) {
     return dictionary.filter(word => patterns.reduce((previous, pattern) => previous && pattern.test(word), true));
 }
 
-let solution = 'bayou';
-let guesses = ['swirl', 'touch'];
+let game = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
+let solution = game.solution;
+let guesses = game.boardState.filter(g => !!g);
 
 let possibilities = getGuessPossibilities(solution, guesses);
 let share = possibilities.join(", ");
