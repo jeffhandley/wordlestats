@@ -91,7 +91,7 @@ let getPossibilities = (answer, guesses) =>
         
         let possibilities = getGuessPossibilities(answer, guesses.slice(0, index + 1));
         
-        if (possibilities < 10) {
+        if (possibilities.length < 10) {
             return `${guessNum} ${possibilities.join(", ")}`;
         }
         
