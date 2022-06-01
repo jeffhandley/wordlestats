@@ -91,11 +91,13 @@ let getPossibilities = (answer, guesses) =>
         
         let possibilities = getGuessPossibilities(answer, guesses.slice(0, index + 1));
         
-        if (possibilities.length < 10) {
+        if (possibilities.length == 1 && guess == possibilities[0]) {
+            return `${guessNum} {guess} 💯`;
+        } else if (possibilities.length < 10) {
             return `${guessNum} ${possibilities.join(", ")}`;
+        } else {        
+            return `${guessNum} ${possibilities.length.toLocaleString()} words`;
         }
-        
-        return `${guessNum} ${possibilities.length.toLocaleString()} words`;
     });
 
 let game = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
