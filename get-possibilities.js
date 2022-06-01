@@ -61,11 +61,48 @@ function getGuessPossibilities(answer, guesses) {
     return dictionary.filter(word => patterns.reduce((previous, pattern) => previous && pattern.test(word), true));
 }
 
+let getPossibilities = (answer, guesses) =>
+    guesses.map((guess, index) => {
+        let guessNum;
+        
+        switch (index + 1) {
+            case 1:
+                let guessNum = "1️⃣";
+                break;
+            case 2:
+                let guessNum = "2️⃣";
+                break;
+            case 3:
+                let guessNum = "3️⃣";
+                break;
+            case 4:
+                let guessNum = "4️⃣";
+                break;
+            case 5:
+                let guessNum = "5️⃣";
+                break;
+            case 6:
+                let guessNum = "6️⃣";
+                break;
+            default:
+                let guessNum = "*️⃣";
+                break;
+        }
+        
+        let possibilities = getGuessPossibilities(answer, guesses.slice(0, index + 1));
+        
+        if (possibilities < 10) {
+            return `${guessNum} ${possibilities.join(", ")}`;
+        }
+        
+        return `${guessNum} ${possibilities.length.toLocaleString() words}`;
+    });
+
 let game = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
 let solution = game.solution;
 let guesses = game.boardState.filter(g => !!g);
 
-let possibilities = getGuessPossibilities(solution, guesses);
-let share = possibilities.length > 25 ? `${possibilities.length.toLocaleString()} words remain` : possibilities.join(", ");
+let possibilities = getPossibilities(solution, guesses);
+let share = possibilities.join("\n");
 
 completion(share);
