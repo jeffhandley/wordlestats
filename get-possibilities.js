@@ -95,7 +95,7 @@ let getPossibilities = (answer, guesses) =>
             return `${guessNum} ${possibilities.join(", ")}`;
         }
         
-        return `${guessNum} ${possibilities.length.toLocaleString() words}`;
+        return `${guessNum} ${possibilities.length.toLocaleString()} words`;
     });
 
 let game = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
