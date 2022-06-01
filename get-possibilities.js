@@ -67,25 +67,25 @@ let getPossibilities = (answer, guesses) =>
         
         switch (index + 1) {
             case 1:
-                let guessNum = "1️⃣";
+                guessNum = "1️⃣";
                 break;
             case 2:
-                let guessNum = "2️⃣";
+                guessNum = "2️⃣";
                 break;
             case 3:
-                let guessNum = "3️⃣";
+                guessNum = "3️⃣";
                 break;
             case 4:
-                let guessNum = "4️⃣";
+                guessNum = "4️⃣";
                 break;
             case 5:
-                let guessNum = "5️⃣";
+                guessNum = "5️⃣";
                 break;
             case 6:
-                let guessNum = "6️⃣";
+                guessNum = "6️⃣";
                 break;
             default:
-                let guessNum = "*️⃣";
+                guessNum = "*️⃣";
                 break;
         }
         
