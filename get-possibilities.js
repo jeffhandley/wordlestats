@@ -94,9 +94,9 @@ let getPossibilities = (answer, guesses) =>
         if (possibilities.length == 1 && guess == possibilities[0]) {
             return `${guessNum} ${guess} 💯`;
         } else if (possibilities.length < 10) {
-            return `${guessNum} ${guess}: ${possibilities.join(", ")}`;
+            return `${guessNum} [${guess.toUpperCase()}]\n${possibilities.join(", ")}`;
         } else {        
-            return `${guessNum} ${guess}: ${possibilities.length.toLocaleString()} words`;
+            return `${guessNum} [${guess.toUpperCase()}] ${possibilities.length.toLocaleString()} words`;
         }
     });
 
