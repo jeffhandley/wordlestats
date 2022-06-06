@@ -93,8 +93,10 @@ let getPossibilities = (answer, guesses) =>
         
         if (possibilities.length == 1 && guess == possibilities[0]) {
             return `${guessNum} [${guess.toUpperCase()}] 💯`;
+        } else if (possibilities.length == 1) {
+            return `${guessNum} [${guess.toUpperCase()}] 1 word left: ${possibilities[0]}`;
         } else if (possibilities.length < 10) {
-            return `${guessNum} [${guess.toUpperCase()}]\n${possibilities.join(", ")}`;
+            return `${guessNum} [${guess.toUpperCase()}] ${possibilities.length.toLocaleString()} words\n${possibilities.join(", ")}`;
         } else {        
             return `${guessNum} [${guess.toUpperCase()}] ${possibilities.length.toLocaleString()} words`;
         }
