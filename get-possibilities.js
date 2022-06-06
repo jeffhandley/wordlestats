@@ -92,7 +92,7 @@ let getPossibilities = (answer, guesses) =>
         let possibilities = getGuessPossibilities(answer, guesses.slice(0, index + 1));
         
         if (possibilities.length == 1 && guess == possibilities[0]) {
-            return `${guessNum} ${guess} 💯`;
+            return `${guessNum} [${guess.toUpperCase()}] 💯`;
         } else if (possibilities.length < 10) {
             return `${guessNum} [${guess.toUpperCase()}]\n${possibilities.join(", ")}`;
         } else {        
