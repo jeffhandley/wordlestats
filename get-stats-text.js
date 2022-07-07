@@ -71,7 +71,9 @@ let puzzleNum = Math.round(since/864e5);
 let data = JSON.parse(localStorage.getItem("nyt-wordle-moogle/ANON")) || {};
 let {stats, game} = data;
 
-let solution = game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null;
+let legacyState = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
+
+let solution = legacyState.solution || (game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null);
 let guesses = game.boardState.filter(g => !!g);
 
 let possibilities = solution ? getPossibilities(solution, guesses) : null;
@@ -92,9 +94,9 @@ function getBar(guesses, num) {
   return `${colons}${dot} ${count}${plus}`;
 }
 
-let share = `Wordle ${puzzleNum} ${game.rowIndex}/6${game.hardMode ? "*" : ""}.
+let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${game.hardMode ? "*" : ""}
 
-${getBoard(game.evaluations)}
+${getBoard(legacyState.evaluations)}
 
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
