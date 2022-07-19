@@ -64,40 +64,43 @@ function getGuessPossibilities(answer, guesses) {
 let getPossibilities = (answer, guesses) =>
     guesses.map((guess, index) => [guess, getGuessPossibilities(answer, guesses.slice(0, index + 1)).length]);
 
-let gameDataResponse = await fetch("https://www.nytimes.com/svc/games/state/wordle/latest");
-let {game_data: {game, settings, stats}} = await gameDataResponse.json();
+fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
+    .then(response => response.json())
+    .then(data => {
+        let {game_data: {game, settings, stats}} = data;
 
-let puzzleNum = game.id;
-let solution = game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null;
-let guesses = game.boardState.filter(guess => !!guess);
-let possibilities = solution ? getPossibilities(solution, guesses) : null;
+        let puzzleNum = game.id;
+        let solution = game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null;
+        let guesses = game.boardState.filter(guess => !!guess);
+        let possibilities = solution ? getPossibilities(solution, guesses) : null;
 
-function getBlocks(guess, num) {
-  return guess.map(l => l == "correct" ? "🟩" : (l == "present" ? "🟨" : "⬛️")).join("") + (possibilities && num < guesses.length - 1 ? " " + possibilities[num][1].toLocaleString() : "");
-}
+        function getBlocks(guess, num) {
+          return guess.map(l => l == "correct" ? "🟩" : (l == "present" ? "🟨" : "⬛️")).join("") + (possibilities && num < guesses.length - 1 ? " " + possibilities[num][1].toLocaleString() : "");
+        }
 
-function getBoard(guesses) {
-  return guesses.filter(guess => !!guess).map(getBlocks).join("\n");
-}
+        function getBoard(guesses) {
+          return guesses.filter(guess => !!guess).map(getBlocks).join("\n");
+        }
 
-function getBar(guesses, num) {
-  let count = guesses[num];
-  let colons = ":".repeat(Math.floor(count/2));
-  let dot = count % 2 == 1 ? "." : "";
-  let plus = (num == "fail" ? (game.status == "FAIL") : (game.currentRowIndex == num)) ? "+" : "";
-  return `${colons}${dot} ${count}${plus}`;
-}
+        function getBar(guesses, num) {
+          let count = guesses[num];
+          let colons = ":".repeat(Math.floor(count/2));
+          let dot = count % 2 == 1 ? "." : "";
+          let plus = (num == "fail" ? (game.status == "FAIL") : (game.currentRowIndex == num)) ? "+" : "";
+          return `${colons}${dot} ${count}${plus}`;
+        }
 
-let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
+        let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
 
-Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
+        Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
-1️⃣ ${getBar(stats.guesses, 1)}
-2️⃣ ${getBar(stats.guesses, 2)}
-3️⃣ ${getBar(stats.guesses, 3)}
-4️⃣ ${getBar(stats.guesses, 4)}
-5️⃣ ${getBar(stats.guesses, 5)}
-6️⃣ ${getBar(stats.guesses, 6)}
-*️⃣ ${getBar(stats.guesses, "fail")}`;
+        1️⃣ ${getBar(stats.guesses, 1)}
+        2️⃣ ${getBar(stats.guesses, 2)}
+        3️⃣ ${getBar(stats.guesses, 3)}
+        4️⃣ ${getBar(stats.guesses, 4)}
+        5️⃣ ${getBar(stats.guesses, 5)}
+        6️⃣ ${getBar(stats.guesses, 6)}
+        *️⃣ ${getBar(stats.guesses, "fail")}`;
 
-if (completion) completion(share);
+        completion(share);
+    });
