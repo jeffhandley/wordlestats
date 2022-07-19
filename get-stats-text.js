@@ -91,7 +91,9 @@ fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
         }
 
         let share = //`Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
-`Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
+`
+
+Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
 1️⃣ ${getBar(stats.guesses, 1)}
 2️⃣ ${getBar(stats.guesses, 2)}
