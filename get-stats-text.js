@@ -90,17 +90,16 @@ fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
           return `${colons}${dot} ${count}${plus}`;
         }
 
-        let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
+        let share = //`Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
+`Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
-        Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
-
-        1️⃣ ${getBar(stats.guesses, 1)}
-        2️⃣ ${getBar(stats.guesses, 2)}
-        3️⃣ ${getBar(stats.guesses, 3)}
-        4️⃣ ${getBar(stats.guesses, 4)}
-        5️⃣ ${getBar(stats.guesses, 5)}
-        6️⃣ ${getBar(stats.guesses, 6)}
-        *️⃣ ${getBar(stats.guesses, "fail")}`;
+1️⃣ ${getBar(stats.guesses, 1)}
+2️⃣ ${getBar(stats.guesses, 2)}
+3️⃣ ${getBar(stats.guesses, 3)}
+4️⃣ ${getBar(stats.guesses, 4)}
+5️⃣ ${getBar(stats.guesses, 5)}
+6️⃣ ${getBar(stats.guesses, 6)}
+*️⃣ ${getBar(stats.guesses, "fail")}`;
 
         completion(share);
     });
