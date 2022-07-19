@@ -64,18 +64,12 @@ function getGuessPossibilities(answer, guesses) {
 let getPossibilities = (answer, guesses) =>
     guesses.map((guess, index) => [guess, getGuessPossibilities(answer, guesses.slice(0, index + 1)).length]);
 
-let first = new Date(2021,5,19,0,0,0,0);
-let since = (new Date()).setHours(0,0,0,0) - first.setHours(0,0,0,0);
-let puzzleNum = Math.round(since/864e5);
+let gameDataResponse = await fetch("https://www.nytimes.com/svc/games/state/wordle/latest");
+let {game_data: {game, settings, stats}} = await gameDataResponse.json();
 
-let data = JSON.parse(localStorage.getItem("nyt-wordle-moogle/ANON")) || {};
-let {stats, game} = data;
-
-let legacyState = JSON.parse(localStorage.getItem("nyt-wordle-state")) || {};
-
-let solution = legacyState.solution || (game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null);
-let guesses = game.boardState.filter(g => !!g);
-
+let puzzleNum = game.id;
+let solution = game.status == "WIN" ? game.boardState[game.currentRowIndex - 1] : null;
+let guesses = game.boardState.filter(guess => !!guess);
 let possibilities = solution ? getPossibilities(solution, guesses) : null;
 
 function getBlocks(guess, num) {
@@ -83,20 +77,18 @@ function getBlocks(guess, num) {
 }
 
 function getBoard(guesses) {
-  return guesses.filter(g => !!g).map(getBlocks).join("\n");
+  return guesses.filter(guess => !!guess).map(getBlocks).join("\n");
 }
 
 function getBar(guesses, num) {
   let count = guesses[num];
   let colons = ":".repeat(Math.floor(count/2));
   let dot = count % 2 == 1 ? "." : "";
-  let plus = (num == "fail" ? (game.gameStatus == "FAIL") : (game.rowIndex == num)) ? "+" : "";
+  let plus = (num == "fail" ? (game.status == "FAIL") : (game.currentRowIndex == num)) ? "+" : "";
   return `${colons}${dot} ${count}${plus}`;
 }
 
-let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${game.hardMode ? "*" : ""}
-
-${getBoard(legacyState.evaluations)}
+let share = `Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
 
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
@@ -108,4 +100,4 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 6️⃣ ${getBar(stats.guesses, 6)}
 *️⃣ ${getBar(stats.guesses, "fail")}`;
 
-completion(share);
+if (completion) completion(share);
