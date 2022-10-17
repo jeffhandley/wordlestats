@@ -84,10 +84,36 @@ fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
 
         function getBar(guesses, num) {
           let count = guesses[num];
-          let colons = ":".repeat(Math.floor(count/2));
-          let dot = count % 2 == 1 ? "." : "";
+          let eights = "⣿".repeat(Math.floor(count/8));
+          let remainder = count % 8;
+          let dots = "";
+
+          switch (remainder) {
+              case 1:
+                  dots = "⠁";
+                  break;
+              case 2:
+                  dots = "⠃";
+                  break;
+              case 3:
+                  dots = "⠇";
+                  break;
+              case 4:
+                  dots = "⡇";
+                  break;
+              case 5:
+                  dots = "⡏";
+                  break;
+              case 6:
+                  dots = "⡟";
+                  break;
+              case 7:
+                  dots = "⡿";
+                  break;
+          }
+
           let plus = (num == "fail" ? (game.status == "FAIL") : (game.currentRowIndex == num)) ? "+" : "";
-          return `${colons}${dot} ${count}${plus}`;
+          return `${eights}${dots}${count}${plus}`;
         }
 
         let share = //`Wordle ${puzzleNum} ${game.currentRowIndex}/6${settings.hardMode ? "*" : ""}
