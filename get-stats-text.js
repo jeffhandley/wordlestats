@@ -21,7 +21,8 @@ fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
           let remainder = count % 8;
           let dots = "";
 
-          switch (remainder) {
+          if (count > 0) {
+            switch (remainder) {
               case 0:
                   dots = " ";
                   break;
@@ -46,6 +47,7 @@ fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
               case 7:
                   dots = "⡿";
                   break;
+            }
           }
 
           let plus = (num == "fail" ? (game.status != "WIN") : (game.currentRowIndex == num)) ? "+" : "";
