@@ -72,3 +72,5 @@ function getStatsText(boardShare) {
           completion(share);
       });
 }
+
+completion(getStatsText());
