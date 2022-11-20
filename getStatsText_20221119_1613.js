@@ -1,9 +1,9 @@
-function getStatsText(boardShare, onComplete) {
+function getStatsText(boardShare) {
   const squareCorrect = "🟩";
   const squarePresent = "🟨";
   const squareMissing = "⬛️";
 
-  fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
+  return fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
       .then(response => response.json())
       .then(data => {
           let {game_data: {game, settings, stats}} = data;
@@ -69,7 +69,7 @@ function getStatsText(boardShare, onComplete) {
   6️⃣ ${getBar(stats.guesses, 6)}
   *️⃣ ${getBar(stats.guesses, "fail")}`;
 
-          onComplete(share);
+          return share;
       });
 }
 
