@@ -11,7 +11,7 @@ function getStatsText(boardShare) {
   let guesses = game.boardState.filter(guess => !!guess);
   
   function getBoard() {
-    var guessLine = /^(🟩|🟨|⬛️){5}/;
+    var guessLine = /^[⬛🟨🟩]{5}/;
     
     var guessLines = (boardShare ?? "").trim().split("\n").filter(line => line.match(guessLine));
     if (guessLines.length == 0) return null;
