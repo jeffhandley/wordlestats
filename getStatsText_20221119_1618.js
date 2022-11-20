@@ -41,7 +41,7 @@ function getStatsText(boardShare) {
             let dots = "";
 
             if (count > 0) switch (remainder) {
-              case 0: dots = " "; break;
+              case 0: dots = "⠀"; break;
               case 1: dots = "⠁"; break;
               case 2: dots = "⠃"; break;
               case 3: dots = "⠇"; break;
@@ -72,5 +72,3 @@ function getStatsText(boardShare) {
           return share;
       });
 }
-
-completion(true);
