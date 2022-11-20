@@ -8,6 +8,7 @@ function getStatsText(boardShare) {
   req.send();
   
   var data = JSON.parse(req.responseText);
+  return data;
   let {game_data: {game, settings, stats}} = data;
 
   let puzzleNum = game.dayOffset;
