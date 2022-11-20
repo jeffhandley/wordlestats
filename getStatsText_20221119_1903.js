@@ -36,7 +36,7 @@ function getStatsText(boardShare) {
       case 7: dots = "⡿"; break;
     }
 
-    let plus = (num == "fail" ? gameWon : (game.currentRowIndex == num)) ? "+" : "";
+    let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
     return `${eights}${dots}${count}${plus}`;
   }
 
