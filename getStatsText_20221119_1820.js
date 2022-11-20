@@ -10,9 +10,6 @@ function getStatsText(boardShare) {
   var data = JSON.parse(req.responseText);
 
   let {game_data: {game, settings, stats}} = data;
-  
-  return JSON.stringify(game);
-
   let puzzleNum = game.dayOffset;
   let gameWon = (game.status == "WIN");
   let solution = gameWon ? game.boardState[game.currentRowIndex - 1] : null;
@@ -57,7 +54,7 @@ function getStatsText(boardShare) {
     return `${eights}${dots}${count}${plus}`;
   }
 
-  let share = `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
+  return `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
 ${getBoard()}
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
@@ -68,6 +65,4 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 5️⃣ ${getBar(stats.guesses, 5)}
 6️⃣ ${getBar(stats.guesses, 6)}
 *️⃣ ${getBar(stats.guesses, "fail")}`;
-
-  return share;
 }
