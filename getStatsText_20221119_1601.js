@@ -1,4 +1,4 @@
-function getStatsText(boardShare) {
+function getStatsText(boardShare, onComplete) {
   const squareCorrect = "🟩";
   const squarePresent = "🟨";
   const squareMissing = "⬛️";
@@ -69,8 +69,8 @@ function getStatsText(boardShare) {
   6️⃣ ${getBar(stats.guesses, 6)}
   *️⃣ ${getBar(stats.guesses, "fail")}`;
 
-          completion(share);
+          onComplete(share);
       });
 }
 
-completion(getStatsText());
+completion(true);
