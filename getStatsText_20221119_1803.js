@@ -10,13 +10,13 @@ function getStatsText(boardShare) {
   var data = JSON.parse(req.responseText);
 
   let {game_data: {game, settings, stats}} = data;
+  
+  return JSON.stringify(game);
 
   let puzzleNum = game.dayOffset;
   let gameWon = (game.status == "WIN");
   let solution = gameWon ? game.boardState[game.currentRowIndex - 1] : null;
   let guesses = game.boardState.filter(guess => !!guess);
-
-  return guesses;
   
   function getBlocks(guess, num) {
     return guess.map(l => l == "correct" ? squareCorrect : (l == "present" ? squarePresent : squareMissing)).join("");
