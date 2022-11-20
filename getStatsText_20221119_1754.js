@@ -1,11 +1,13 @@
-async function getStatsText(boardShare) {
+function getStatsText(boardShare) {
   const squareCorrect = "🟩";
   const squarePresent = "🟨";
   const squareMissing = "⬛️";
-
-  var data = await fetch("https://www.nytimes.com/svc/games/state/wordle/latest")
-      .then(response => response.json());
   
+  var req = new XMLHttpRequest();
+  req.open("GET", "https://www.nytimes.com/svc/games/state/wordle/latest", false);
+  req.send();
+  
+  var data = JSON.parse(req.responseText);
   let {game_data: {game, settings, stats}} = data;
 
   let puzzleNum = game.dayOffset;
