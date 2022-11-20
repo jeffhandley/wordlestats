@@ -8,7 +8,7 @@ function getStatsText(boardShare) {
   req.send();
   
   var data = JSON.parse(req.responseText);
-  return data;
+
   let {game_data: {game, settings, stats}} = data;
 
   let puzzleNum = game.dayOffset;
@@ -16,6 +16,8 @@ function getStatsText(boardShare) {
   let solution = gameWon ? game.boardState[game.currentRowIndex - 1] : null;
   let guesses = game.boardState.filter(guess => !!guess);
 
+  return guesses;
+  
   function getBlocks(guess, num) {
     return guess.map(l => l == "correct" ? squareCorrect : (l == "present" ? squarePresent : squareMissing)).join("");
   }
