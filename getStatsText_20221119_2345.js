@@ -14,7 +14,7 @@ function getStatsText(boardShare) {
     var guessLine = /^[⬛🟨🟩]{5}/;
     
     var guessLines = (boardShare ?? "").trim().split("\n").filter(line => line.match(guessLine));
-    if (guessLines.length == 0) return null;
+    if (guessLines.length == 0) return "";
 
     return "\n" + guessLines.join("\n") + "\n";
   }
