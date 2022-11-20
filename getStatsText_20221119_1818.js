@@ -22,21 +22,18 @@ function getStatsText(boardShare) {
     return guess.map(l => l == "correct" ? squareCorrect : (l == "present" ? squarePresent : squareMissing)).join("");
   }
 
-  function getBoard(guesses) {
+  function getBoard() {
     boardShare = (boardShare ?? "").trim();
+    if (boardShare.length == 0) return null;
 
-    if (boardShare.length > 0) {
-      let firstCorrect = boardShare.indexOf(squareCorrect);
-      let firstPresent = boardShare.indexOf(squarePresent);
-      let firstMissing = boardShare.indexOf(squareMissing);
+    let firstCorrect = boardShare.indexOf(squareCorrect);
+    let firstPresent = boardShare.indexOf(squarePresent);
+    let firstMissing = boardShare.indexOf(squareMissing);
 
-      let firstSquare = Math.min(firstCorrect, firstPresent, firstMissing);
-      let boardOnly = boardShare.substr(firstSquare);
+    let firstSquare = Math.min(firstCorrect, firstPresent, firstMissing);
+    let boardOnly = boardShare.substr(firstSquare);
 
-      return boardOnly;
-    }
-
-    return guesses.filter(guess => !!guess).map(getBlocks).join("\n");
+    return `\n${boardOnly}\n`;
   }
 
   function getBar(guesses, num) {
@@ -61,9 +58,7 @@ function getStatsText(boardShare) {
   }
 
   let share = `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
-
-${getBoard(guesses)}
-
+${getBoard()}
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
 1️⃣ ${getBar(stats.guesses, 1)}
