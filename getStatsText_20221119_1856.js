@@ -1,36 +1,22 @@
 function getStatsText(boardShare) {
-  const squareCorrect = "🟩";
-  const squarePresent = "🟨";
-  const squareMissing = "⬛️";
-  
-  var req = new XMLHttpRequest();
+  let req = new XMLHttpRequest();
   req.open("GET", "https://www.nytimes.com/svc/games/state/wordle/latest", false);
   req.send();
   
-  var data = JSON.parse(req.responseText);
-
+  let data = JSON.parse(req.responseText);
   let {game_data: {game, settings, stats}} = data;
   let puzzleNum = game.dayOffset;
   let gameWon = (game.status == "WIN");
   let solution = gameWon ? game.boardState[game.currentRowIndex - 1] : null;
   let guesses = game.boardState.filter(guess => !!guess);
   
-  function getBlocks(guess, num) {
-    return guess.map(l => l == "correct" ? squareCorrect : (l == "present" ? squarePresent : squareMissing)).join("");
-  }
-
   function getBoard() {
-    boardShare = (boardShare ?? "").trim();
-    if (boardShare.length == 0) return null;
+    var guessLine = /^(🟩|🟨|⬛️){5}/;
+    
+    var guessLines = (boardShare ?? "").trim().split("\n").filter(line => line.match(guessLine));
+    if (guessLines.length == 0) return null;
 
-    let firstCorrect = boardShare.indexOf(squareCorrect);
-    let firstPresent = boardShare.indexOf(squarePresent);
-    let firstMissing = boardShare.indexOf(squareMissing);
-
-    let firstSquare = Math.min(firstCorrect, firstPresent, firstMissing);
-    let boardOnly = boardShare.substr(firstSquare);
-
-    return `\n${boardOnly}\n`;
+    return "\n" + guessLines.join("\n") + "\n";
   }
 
   function getBar(guesses, num) {
