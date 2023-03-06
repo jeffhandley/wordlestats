@@ -23,23 +23,19 @@ function getStatsText(boardShare) {
     let count = guesses[num];
     let percent = Math.round(100 * count / stats.gamesPlayed);
 
-    let eights = "⣿".repeat(Math.floor(percent / 8));
-    let remainder = percent % 8;
+    let fours = "⠛".repeat(Math.floor(percent / 4));
+    let remainder = percent % 4;
     let dots = "";
 
     if (count > 0) switch (remainder) {
       case 0: dots = "⠀"; break;
       case 1: dots = "⠁"; break;
       case 2: dots = "⠃"; break;
-      case 3: dots = "⠇"; break;
-      case 4: dots = "⡇"; break;
-      case 5: dots = "⡏"; break;
-      case 6: dots = "⡟"; break;
-      case 7: dots = "⡿"; break;
+      case 3: dots = "⠋"; break;
     }
 
     let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
-    return `${eights}${dots}${count} (${percent}%) ${plus}`;
+    return `${fours}${dots}${count}${plus}`;
   }
 
   return `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
