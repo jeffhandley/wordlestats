@@ -9,7 +9,6 @@ function getStatsText(boardShare) {
   let gameWon = (game.status == "WIN");
   let solution = gameWon ? game.boardState[game.currentRowIndex - 1] : null;
   let guesses = game.boardState.filter(guess => !!guess);
-  let totalGuesses = guesses.reduce((a, g) => a + g, 0);
 
   function getBoard() {
     var guessLine = /^[⬛🟨🟩]{5}/;
@@ -22,7 +21,7 @@ function getStatsText(boardShare) {
 
   function getBar(guesses, num) {
     let count = guesses[num];
-    let percent = Math.round(100 * count / totalGuesses);
+    let percent = Math.round(100 * count / stats.gamesPlayed);
 
     let eights = "⣿".repeat(Math.floor(percent / 8));
     let remainder = percent % 8;
