@@ -21,7 +21,7 @@ function getStatsText(boardShare) {
   }
 
   function getPercentages(guesses) {
-    let percentages = guesses.map(g => Math.floor(100 * g / stats.gamesPlayed);
+    let percentages = guesses.map(g => Math.floor(100 * g / stats.gamesPlayed));
     let totalPercentage = percentages.reduce((t, p) => t + p, 0);
     let light = guesses.map(g => { let p = 100 * g / stats.gamesPlayed; return p - Math.floor(p); });
     light.sort();
@@ -56,10 +56,10 @@ ${getBoard()}
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
 1️⃣ ${getBar(stats.guesses, guessPercentages, 1)}
-2️⃣ ${getBar(stats.guesses, guessPercentages,  2)}
-3️⃣ ${getBar(stats.guesses, guessPercentages,  3)}
-4️⃣ ${getBar(stats.guesses, guessPercentages,  4)}
-5️⃣ ${getBar(stats.guesses, guessPercentages,  5)}
-6️⃣ ${getBar(stats.guesses, guessPercentages,  6)}
+2️⃣ ${getBar(stats.guesses, guessPercentages, 2)}
+3️⃣ ${getBar(stats.guesses, guessPercentages, 3)}
+4️⃣ ${getBar(stats.guesses, guessPercentages, 4)}
+5️⃣ ${getBar(stats.guesses, guessPercentages, 5)}
+6️⃣ ${getBar(stats.guesses, guessPercentages, 6)}
 *️⃣ ${getBar(stats.guesses, guessPercentages, "fail")}`;
 }
