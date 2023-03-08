@@ -43,16 +43,14 @@ function getStatsText(boardShare) {
     let count = guesses[num];
     let percentage = guessPercentages[num];
 
-    let full = "⠿".repeat(Math.floor(percentage / 6));
+    let full = "⠿".repeat(Math.floor(percentage / 3));
     let part = "";
     
-    switch (percentage % 6) {
+    // https://www.fileformat.info/info/unicode/block/braille_patterns/list.htm
+    switch (percentage % 3) {
       case 0: part = ""; break;
-      case 1: part = "⠂"; break;
-      case 2: part = "⠅"; break;
-      case 3: part = "⠇"; break;
-      case 4: part = "⠗"; break;
-      case 5: part = "⠯"; break;
+      case 1: part = "⠒"; break;
+      case 2: part = "⠗"; break;
     }
 
     let percent = count > 0 ? ` [${percentage}%]` : "";
