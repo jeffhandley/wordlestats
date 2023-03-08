@@ -43,8 +43,8 @@ function getStatsText(boardShare) {
     let count = guesses[num];
     let percent = guessPercentages[num];
 
-    let full = "▓".repeat(Math.floor(percent / 3));
-    let part = (percent % 3 == 2) ? "▒" : ((percent % 3 == 1) ? "░" : "");
+    let full = "⠿".repeat(Math.floor(percent / 3));
+    let part = (percent % 3 == 2) ? "⠭" : ((percent % 3 == 1) ? "⠒" : "");
     let space = count > 0 ? " " : "";
     let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
     
