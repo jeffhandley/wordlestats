@@ -41,14 +41,15 @@ function getStatsText(boardShare) {
 
   function getBar(guesses, percentages, num) {
     let count = guesses[num];
-    let percent = guessPercentages[num];
+    let percentage = guessPercentages[num];
 
-    let full = "⠿".repeat(Math.floor(percent / 3));
-    let part = (percent % 3 == 2) ? "⠗" : ((percent % 3 == 1) ? "⠒" : "");
+    let full = "⠿".repeat(Math.floor(percentage / 3));
+    let part = (percentage % 3 == 2) ? "⠗" : ((percentage % 3 == 1) ? "⠒" : "");
+    let percent = count > 0 ? ` [${percentage}%]` : "";
     let space = count > 0 ? " " : "";
     let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
     
-    return `${full}${part}${space}[${percent}%] ${count}${plus}`;
+    return `${full}${part}${percent}${space}${count}${plus}`;
   }
 
   return `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
