@@ -20,18 +20,23 @@ function getStatsText(boardShare) {
     return "\n" + guessLines.join("\n") + "\n";
   }
 
-  function getPercentages(guesses) {
-    let percentages = guesses.map(g => Math.floor(100 * g / stats.gamesPlayed));
-    let totalPercentage = percentages.reduce((t, p) => t + p, 0);
-    let light = guesses.map(g => { let p = 100 * g / stats.gamesPlayed; return p - Math.floor(p); });
-    light.sort();
-    light.reverse();
-
-    for (let bump = 0; bump < 100 - totalPercentage; bump++) {
-        percentages[bump < 7 ? bump : "fail"]++;
+  function getPercentages(guessStats) {
+    let percentages = Object.keys(guessStats)
+      .map(g => ({key: g, value: Math.floor(100 * guessStats[g] / stats.gamesPlayed)}));
+    
+    let totalPercentage = percentages.reduce((t, p) => t + p.value, 0);
+    
+    while (totalPercentage < 100) {
+      let light = Object.keys(guessStats)
+        .map(g => { let p = 100 * guessStats[g] / stats.gamesPlayed; return { key: g, value: p - Math.floor(p) }; })
+        .sort((a, b) => a.value < b.value ? -1 : a.value == b.value ? 0 : 1);
+    
+      while (light.length > 0 && totalPercentage++ < 100) {
+        percentages[light.pop().key].value++;
+      }
     }
     
-    return percentages;
+    return percentages.map(({key, value}) => ({[key]: value})).reduce((a, p) => ({ ...a, ...p }), {} );
   }
 
   function getBar(guesses, percentages, num) {
@@ -39,16 +44,11 @@ function getStatsText(boardShare) {
     let percent = guessPercentages[num];
 
     let full = "█".repeat(Math.floor(percent / 2));
-    let half = percent % 2;
-    let dots = "";
-
-    if (count > 0) switch (half) {
-      case 0: dots = "⠀"; break;
-      case 1: dots = "▌"; break;
-    }
-
+    let half = percent % 2 == 1 ? "▌" : "";
+    let space = count > 0 ? " " : "";
     let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
-    return `${full}${half}${count}${plus} (${percent}%)`;
+    
+    return `${full}${half}${space}[${percent}%] ${count}${plus}`;
   }
 
   return `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
