@@ -53,7 +53,7 @@ function getStatsText(boardShare) {
       case 2: part = "⠗"; break;
     }
 
-    let percent = count > 0 ? ` [${percentage}%]` : "";
+    let percent = count > 0 ? ` [${percentage}﹪]` : "";
     let space = count > 0 ? " " : "";
     let plus = (num == "fail" ? !gameWon : (game.currentRowIndex == num)) ? "+" : "";
     
