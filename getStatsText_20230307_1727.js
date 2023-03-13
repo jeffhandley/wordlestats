@@ -21,22 +21,31 @@ function getStatsText(boardShare) {
   }
 
   function getPercentages(guessStats) {
-    let percentages = Object.keys(guessStats)
-      .map(g => ({key: g, value: Math.floor(100 * guessStats[g] / stats.gamesPlayed)}));
     
-    let totalPercentage = percentages.reduce((t, p) => t + p.value, 0);
+  6: 11,
+  fail: 10
+};
+
+let stats = { gamesPlayed: 432 };
+
+
+let percentages = Object.keys(guessStats)
+      .map(g => ({key: g, value: Math.floor(100 * guessStats[g] / stats.gamesPlayed)}))
+      .reduce((a, p) => ({ ...a, [p.key]: p.value }), {} );
+  
+    let totalPercentage = Object.keys(percentages).reduce((t, p) => t + percentages[p], 0);
     
     while (totalPercentage < 100) {
-      let light = Object.keys(guessStats)
+      let light = Object.keys(percentages)
         .map(g => { let p = 100 * guessStats[g] / stats.gamesPlayed; return { key: g, value: p - Math.floor(p) }; })
         .sort((a, b) => a.value < b.value ? -1 : a.value == b.value ? 0 : 1);
     
       while (light.length > 0 && totalPercentage++ < 100) {
-        percentages[light.pop().key].value++;
+        percentages[light.pop().key]++;
       }
     }
     
-    return percentages.map(({key, value}) => ({[key]: value})).reduce((a, p) => ({ ...a, ...p }), {} );
+    return percentages;
   }
 
   function getBar(guesses, percentages, num) {
