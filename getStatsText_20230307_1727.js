@@ -21,8 +21,6 @@ function getStatsText(boardShare) {
   }
 
   function getPercentages(guessStats) {
-    let stats = { gamesPlayed: 432 };
-
     let percentages = Object.keys(guessStats)
       .map(g => ({key: g, value: Math.floor(100 * guessStats[g] / stats.gamesPlayed)}))
       .reduce((a, p) => ({ ...a, [p.key]: p.value }), {} );
