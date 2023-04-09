@@ -64,7 +64,7 @@ function getStatsText(boardShare) {
     return `${full}${part}${percent}${space}${count}${plus}`;
   }
 
-  return `Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
+  return `#Wordle ${puzzleNum} ${(gameWon ? guesses.length : "X")}/6${settings.hardMode ? "*" : ""}
 ${getBoard()}
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
