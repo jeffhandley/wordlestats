@@ -36,7 +36,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 4️⃣ ${getBar(stats.guesses, guessPercentages, 4)}
 5️⃣ ${getBar(stats.guesses, guessPercentages, 5)}
 6️⃣ ${getBar(stats.guesses, guessPercentages, 6)}
-*️⃣ ${getBar(stats.guesses, guessPercentages, "fail")}`;
+⛔ ${getBar(stats.guesses, guessPercentages, "fail")}`;
 
         callback(statsText);
 
