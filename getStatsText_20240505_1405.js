@@ -10,9 +10,9 @@ function getStatsText(callback) {
 
   function puzzleDataLoaded() {
     const puzzleData = JSON.parse(puzzleReq.responseText);
-    const puzzleNum = puzzleData['id'];
+    const { id: puzzleId, days_since_launch: puzzleNum } = puzzleData;
 
-    const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleNum}`;
+    const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
     const statsReq = new XMLHttpRequest(); statsReq.open('GET', statsUrl);
 
     statsReq.onload = () =>
