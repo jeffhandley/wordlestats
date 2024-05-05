@@ -91,11 +91,11 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
   }
 
   function getBoard(guesses, answer) {
+    const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
+    const letterMatches = Array(5).fill(alphabet);
+
     return guesses.map(guess => {
       const board = Array(5).fill('⬛'), guessLetterUsed = Array(5).fill(false), answerLetterUsed = Array(5).fill(false);
-
-      const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
-      const letterMatches = Array(5).fill(alphabet);
 
       for (let correct = 0; correct < answer.length && correct < guess.length; correct++) {
         if (answer[correct] == guess[correct]) {
@@ -142,7 +142,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
       const possibilities = dictionary.filter(word => patterns.map(p => word.match(p)).reduce((a, e) => a && e)).length;
 
-      return `${board.join('')} ${(possibilities > 1 ? possibilities.toLocaleString() : '')}`;
+      return `${board.join('')} ${(guess != answer ? possibilities.toLocaleString() : '')}`;
     }).join('\n');
   }
 }
