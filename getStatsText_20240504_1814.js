@@ -1,5 +1,6 @@
-function getStatsText(callback, boardShare) {
-  const today = new Date().toISOString().substr(0, 10);
+function getStatsText(callback) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().substr(0, 10);
   const puzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${today}.json`;
   const puzzleReq = new XMLHttpRequest(); puzzleReq.open('GET', puzzleUrl);
   puzzleReq.onload = () => puzzleReq.readyState == XMLHttpRequest.DONE && puzzleReq.status == 200 && puzzleDataLoaded();
@@ -15,6 +16,7 @@ function getStatsText(callback, boardShare) {
     statsReq.onload = () =>
       statsReq.readyState == XMLHttpRequest.DONE && statsReq.status == 200 && (function statsDataLoaded() {
         const statsData = JSON.parse(statsReq.responseText);
+        console.log(statsData);
 
         const {
             states: [ { game_data: game }],
@@ -27,7 +29,9 @@ function getStatsText(callback, boardShare) {
         const guessPercentages = getPercentages(stats.guesses);
 
         const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6${game.hardMode ? " (hard mode)" : ""}
-${getBoard()}
+
+${getBoard(guesses, solution)}
+
 Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
 
 1️⃣ ${getBar(stats.guesses, guessPercentages, 1)}
@@ -85,12 +89,31 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
     statsReq.send();
   }
 
-  function getBoard() {
-    var guessLine = /^[⬛🟨🟩]{5}/;
+  function getBoard(guesses, answer) {
+    return guesses.map(guess => {
+      const board = Array(5).fill('⬛'), guessLetters = Array(5).fill(true), answerLetters = Array(5).fill(true);
 
-    var guessLines = (boardShare ?? "").trim().split("\n").filter(line => line.match(guessLine));
-    if (guessLines.length == 0) return "";
+      for (let correct = 0; correct < answer.length && correct < guess.length; correct++) {
+        if (answer[correct] == guess[correct]) {
+            board[correct] = '🟩';
+            guessLetters[correct] = false;
+            answerLetters[correct] = false;
+        }
+      }
 
-    return "\n" + guessLines.join("\n") + "\n";
+      for (let a = 0; a < answer.length; a++) {
+        if (answerLetters[a]) {
+            for (let g = 0; g < guess.length; g++) {
+                if (guessLetters[g] && answer[a] == guess[g]) {
+                    board[g] = '🟨';
+                    guessLetters[g] = false;
+                    answerLetters[a] = false;
+                }
+            }
+        }
+      }
+
+      return board.join('');
+    }).join('\n');
   }
 }
