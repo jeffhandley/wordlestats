@@ -29,7 +29,7 @@ function getStatsText(callback) {
         const guesses = game.boardState.filter(guess => guess != '');
         const guessPercentages = getPercentages(stats.guesses);
 
-        const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6${game.hardMode ? " (hard mode)" : ""}
+        const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
 
 ${getBoard(guesses, solution)}
 
