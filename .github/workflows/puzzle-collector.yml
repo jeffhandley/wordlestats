@@ -1,0 +1,34 @@
+name: Run Puzzle Collector
+
+on:
+  push:
+    branches: [ main ]
+
+  schedule:
+    - cron: '34 0,6,12,18 * * *'
+
+  workflow_dispatch:
+
+jobs:
+  puzzle-collector:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+          dotnet-quality: 'preview'
+      - run: dotnet run
+        working-directory: src/PuzzleCollector
+
+      - run: |-
+          git add .
+          git diff
+          git config --global user.email "jeffhandley@users.noreply.github.com"
+          git config --global user.name "Puzzle Collector"
+          git commit -m "Add collected puzzles" || echo "No puzzles collected"
+          git push
+        name: Commit and push collected puzzles
