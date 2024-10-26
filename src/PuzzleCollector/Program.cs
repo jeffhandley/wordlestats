@@ -12,8 +12,7 @@ string puzzlesFile = "./puzzles.json";
 
 DateTime utcNow = DateTime.UtcNow;
 TimeZoneInfo pst = TimeZoneInfo.FindSystemTimeZoneById("Pacific Standard Time");
-DateTime todayPST = TimeZoneInfo.ConvertTimeFromUtc(utcNow, pst);
-DateOnly yesterdayPST = DateOnly.FromDateTime(todayPST).AddDays(-1);
+DateOnly todayPST = DateOnly.FromDateTime(TimeZoneInfo.ConvertTimeFromUtc(utcNow, pst));
 
 Puzzle[] savedPuzzles = [];
 
@@ -28,7 +27,7 @@ using HttpClient client = new HttpClient();
 List<Puzzle> downloadedPuzzles = new();
 int count = 0;
 
-for (DateOnly date = firstPuzzle; date < yesterdayPST && count < 100; date = date.AddDays(1))
+for (DateOnly date = firstPuzzle; date < todayPST && count < 100; date = date.AddDays(1))
 {
     if (!savedPuzzles.Any(p => p.print_date == date))
     {
