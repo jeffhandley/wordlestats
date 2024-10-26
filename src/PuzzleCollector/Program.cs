@@ -54,7 +54,7 @@ for (DateOnly date = firstPuzzle; date < todayPST && count < 100; date = date.Ad
 
 downloadedPuzzles.AddRange(savedPuzzles);
 
-string newPuzzlesJson = JsonSerializer.Serialize(downloadedPuzzles.OrderBy(p => p.print_date))
+string newPuzzlesJson = JsonSerializer.Serialize(downloadedPuzzles.OrderByDescending(p => p.print_date))
     .Replace("{", "\n  { ")
     .Replace("\":", "\": ")
     .Replace(",\"", ", \"")
