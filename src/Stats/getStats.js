@@ -1,4 +1,4 @@
-function getStatsText(callback) {
+function getStats(callback) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().substr(0, 10);
   const puzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${today}.json`;
@@ -8,15 +8,14 @@ function getStatsText(callback) {
 
   function puzzleDataLoaded() {
     const puzzleData = JSON.parse(puzzleReq.responseText);
-    const puzzleNum = puzzleData['id'];
+    const { id: puzzleId, days_since_launch: puzzleNum } = puzzleData;
 
-    const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleNum}`;
+    const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
     const statsReq = new XMLHttpRequest(); statsReq.open('GET', statsUrl);
 
     statsReq.onload = () =>
       statsReq.readyState == XMLHttpRequest.DONE && statsReq.status == 200 && (function statsDataLoaded() {
         const statsData = JSON.parse(statsReq.responseText);
-        console.log(statsData);
 
         const {
             states: [ { game_data: game }],
@@ -28,7 +27,7 @@ function getStatsText(callback) {
         const guesses = game.boardState.filter(guess => guess != '');
         const guessPercentages = getPercentages(stats.guesses);
 
-        const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6${game.hardMode ? " (hard mode)" : ""}
+        const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
 
 ${getBoard(guesses, solution)}
 
@@ -42,7 +41,10 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 6️⃣ ${getBar(stats.guesses, guessPercentages, 6)}
 ⛔ ${getBar(stats.guesses, guessPercentages, "fail")}`;
 
-        callback(statsText);
+        window.wordleStats = window.wordleStats || {};
+        window.wordleStats.statsText = statsText;
+
+        callback(window.wordleStats);
 
         function getPercentages(guessStats) {
           let percentages = Object.keys(guessStats)
@@ -90,30 +92,81 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
   }
 
   function getBoard(guesses, answer) {
+    const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
+    const letterMatches = Array(5).fill(alphabet);
+
     return guesses.map(guess => {
-      const board = Array(5).fill('⬛'), guessLetters = Array(5).fill(true), answerLetters = Array(5).fill(true);
+      const board = Array(5).fill('⬛'),
+            guessLetterUsed = Array(5).fill(false),
+            answerLetterUsed = Array(5).fill(false),
+            letterCounts = {};
 
       for (let correct = 0; correct < answer.length && correct < guess.length; correct++) {
         if (answer[correct] == guess[correct]) {
-            board[correct] = '🟩';
-            guessLetters[correct] = false;
-            answerLetters[correct] = false;
+          board[correct] = '🟩';
+          guessLetterUsed[correct] = true;
+          answerLetterUsed[correct] = true;
+          letterMatches[correct] = answer[correct];
+          letterCounts[answer[correct]] = ((letterCounts[answer[correct]]) ?? 0) + 1;
         }
       }
 
-      for (let a = 0; a < answer.length; a++) {
-        if (answerLetters[a]) {
-            for (let g = 0; g < guess.length; g++) {
-                if (guessLetters[g] && answer[a] == guess[g]) {
-                    board[g] = '🟨';
-                    guessLetters[g] = false;
-                    answerLetters[a] = false;
-                }
+      for (let g = 0; g < guess.length; g++) {
+        if (!guessLetterUsed[g]) {
+          for (let a = 0; a < answer.length; a++) {
+            if (!answerLetterUsed[a] && answer[a] == guess[g]) {
+              board[g] = '🟨';
+              guessLetterUsed[g] = true;
+              answerLetterUsed[a] = true;
+
+              // Disallow this letter in this place
+              letterMatches[g] = letterMatches[g].replace(guess[g], '');
+
+              // Keep track of how many times each letter must appear
+              letterCounts[guess[g]] = ((letterCounts[guess[g]]) ?? 0) + 1;
+
+              break; // only capture the first match
             }
+          }
+
+          // if this letter is incorrect, then rule it out from this space
+          // and if the letter doesn't appear elsewhere, rule it out completely
+          if (!guessLetterUsed[g]) {
+            letterMatches[g] = letterMatches[g].replace(guess[g], '');
+
+            if ((letterCounts[guess[g]] ?? 0) == 0) {
+              for (let l = 0; l < letterMatches.length; l++) {
+                letterMatches[l] = letterMatches[l].replace(guess[g], '');
+              }
+            }
+          }
         }
       }
 
-      return board.join('');
+      const patterns = [
+        new RegExp(`^${letterMatches.join('')}$`),
+        ...[...Object.keys(letterCounts)].map(l => l.repeat(letterCounts[l]).split('').join('.*'))
+      ];
+
+      const possibilities = dictionary.filter(word => patterns.map(p => word.match(p)).reduce((a, e) => a && e));
+      let newPossibilities = [...possibilities];
+      let possibilitiesText = '';
+
+      if (guess != answer) {
+        window.wordleStats = window.wordleStats || {};
+        window.wordleStats.possibilities = possibilities;
+        possibilitiesText = ` ${possibilities.length.toLocaleString()}`;
+
+        if (!!wordleStats.puzzles && wordleStats.puzzles.length > 0) {
+          const solutions = wordleStats.puzzles.map(p => p.solution.toLowerCase());
+          newPossibilities = newPossibilities.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
+          possibilitiesText = ` ${newPossibilities.length.toLocaleString()}/${possibilities.length.toLocaleString()}`;
+
+          window.wordleStats.newPossibilities = newPossibilities;
+        }
+      }
+
+      return `${board.join('')}${possibilitiesText}`;
     }).join('\n');
   }
 }
