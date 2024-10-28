@@ -52,15 +52,12 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
         window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
           ...p,
-          text: (i == 0 ? '1️⃣' : (i == 1 ? '2️⃣' : (i == 2 ? '3️⃣' : (i == 3 ? '4️⃣' : (i == 4 ? '5️⃣' : '6️⃣'))))) +
-          ` ${guesses[i].toUpperCase()} : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`) +
-            (!p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
+          text: i == 0 ? `Possible Words: ${p.length.toLocaleString()}\n` : (i == 1 ? '1️⃣' : (i == 2 ? '2️⃣' : (i == 3 ? '3️⃣' : (i == 4 ? '4️⃣' : (i == 5 ? '5️⃣' : '6️⃣'))))) +
+            ` ${guesses[i - 1].toUpperCase()}` + (guesses[i - 1] == solution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
+            (guesses[i - 1] == solution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
         }));
 
-        const possibilitiesToShow = window.wordleStats.possibilities
-            .filter((p, i) => guesses[i] != solution)
-            .map(p => p.text);
-
+        const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
         window.wordleStats.possibilitiesText = possibilitiesToShow.join('\n');
 
         callback(window.wordleStats.statsText);
@@ -175,32 +172,29 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
       const possibilities = dictionary.filter(word => patterns.map(p => word.match(p)).reduce((a, e) => a && e));
       let possibilitiesText = '';
 
-      if (guess != answer) {
-        possibilitiesText = `${possibilities.length.toLocaleString()}`;
+      possibilitiesText = `${possibilities.length.toLocaleString()}`;
 
-        window.wordleStats = window.wordleStats || {};
-        window.wordleStats.possibilities = window.wordleStats.possibilities || [];
-        window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
+      window.wordleStats = window.wordleStats || {};
+      window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
 
-        if (possibilities.length <= 50) {
-          window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
+      if (possibilities.length <= 50) {
+        window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
 
-          if (!!wordleStats.puzzles && wordleStats.puzzles.length > 0) {
-            const solutions = wordleStats.puzzles.map(p => p.solution.toLowerCase());
-            const usedPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) > -1);
-            const newPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
+        if (!!wordleStats.puzzles && wordleStats.puzzles.length > 0) {
+          const solutions = wordleStats.puzzles.map(p => p.solution.toLowerCase());
+          const usedPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) > -1);
+          const newPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
-            if (newPossibilities.length != possibilities.length) {
-              possibilitiesText = `${possibilities.length.toLocaleString().padEnd(2)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(8))}`;
+          if (newPossibilities.length != possibilities.length) {
+            possibilitiesText = `${possibilities.length.toLocaleString().padEnd(2)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(8))}`;
 
-              window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
-              window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
-            }
+            window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
+            window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
           }
         }
-
-        window.wordleStats.possibilities[guessNum + 1].possibilitiesText = possibilitiesText;
       }
+
+      window.wordleStats.possibilities[guessNum + 1].possibilitiesText = possibilitiesText;
 
       window.wordleStats.board = window.wordleStats.board || [];
       window.wordleStats.board[guessNum + 1] = board.join('');
