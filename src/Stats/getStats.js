@@ -52,7 +52,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
         window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
           ...p,
-          text: `Possibilities after guess ${i + 1}: ${p.length.toLocaleString()}\n` +
+          text: `Possibilities after guess ${i + 1} (${guesses[i]}): ${p.length.toLocaleString()}\n` +
             (!p.words || p.length > 20 ? 'Too many to list' : `${(p.newWords || p.words).join(', ')}`) +
             (!!p.usedWords && p.usedWords.length > 0 ?
                 `\n\nAlready used:\n${(p.usedWords.length > 20 ? 'Too many to list' : p.usedWords.join(', '))}` : ''
