@@ -53,7 +53,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
         window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
           ...p,
           text: (i == 0 ? '1️⃣' : (i == 1 ? '2️⃣' : (i == 2 ? '3️⃣' : (i == 3 ? '4️⃣' : (i == 4 ? '5️⃣' : '6️⃣'))))) +
-          ` ${guesses[i].toUpperCase()} : ${p.length.toLocaleString()}` + (!p.newWords || p.newWords.length == p.length ? '' : ` (${p.newWords.length} new)`) +
+          ` ${guesses[i].toUpperCase()} : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`) +
             (!p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
         }));
 
@@ -192,10 +192,10 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
             if (newPossibilities.length != possibilities.length) {
               possibilitiesText = `${possibilities.length.toLocaleString().padEnd(2)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(8))}`;
-            }
 
-            window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
-            window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
+              window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
+              window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
+            }
           }
         }
 
