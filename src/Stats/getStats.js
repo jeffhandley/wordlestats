@@ -52,15 +52,16 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
         window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
           ...p,
-          text: `Possibilities after guess ${i + 1} (${guesses[i]}): ${p.length.toLocaleString()}\n` +
-            (!p.words || p.length > 20 ? 'Too many to list' : `${(p.newWords || p.words).join(', ')}`) +
-            (!!p.usedWords && p.usedWords.length > 0 ?
-                `\n\nAlready used:\n${(p.usedWords.length > 20 ? 'Too many to list' : p.usedWords.join(', '))}` : ''
-            )
+          text: (i == 0 ? '1️⃣' : (i == 1 ? '2️⃣' : (i == 2 ? '3️⃣' : (i == 3 ? '4️⃣' : (i == 4 ? '5️⃣' : '6️⃣'))))) +
+          ` ${guesses[i].toUpperCase()} : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`) +
+            (!p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
         }));
 
-        const possibilitiesToShow = window.wordleStats.possibilities.filter(p => !!p.words && p.length <= 20).map(p => p.text);
-        window.wordleStats.possibilitiesText = possibilitiesToShow.length > 1 ? possibilitiesToShow.join('\n\n') : 'Too many to list';
+        const possibilitiesToShow = window.wordleStats.possibilities
+            .filter((p, i) => guesses[i] != solution)
+            .map(p => p.text);
+
+        window.wordleStats.possibilitiesText = possibilitiesToShow.join('\n');
 
         callback(window.wordleStats.statsText);
 
@@ -182,7 +183,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
         window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
 
         if (possibilities.length <= 50) {
-          window.wordleStats.possibilities[guessNum + 1].words = possibilities;
+          window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
 
           if (!!wordleStats.puzzles && wordleStats.puzzles.length > 0) {
             const solutions = wordleStats.puzzles.map(p => p.solution.toLowerCase());
