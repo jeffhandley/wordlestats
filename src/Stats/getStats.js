@@ -59,8 +59,8 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
             )
         }));
 
-        const possibilitiesToShow = window.wordleStats.possibilities.filter(p => !!p.words && p.length <= 20)[0];
-        window.wordleStats.possibilitiesText = possibilitiesToShow ? possibilitiesToShow.text : 'Too many to list';
+        const possibilitiesToShow = window.wordleStats.possibilities.filter(p => !!p.words && p.length <= 20).map(p => p.text);
+        window.wordleStats.possibilitiesText = possibilitiesToShow.length > 1 ? possibilitiesToShow.join('\n\n') : 'Too many to list';
 
         callback(window.wordleStats.statsText);
 
