@@ -177,7 +177,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
       window.wordleStats = window.wordleStats || {};
       window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
 
-      if (possibilities.length <= 20 && guess != solution) {
+      if (possibilities.length <= 20 && guess != answer) {
         window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
 
         if (!!wordleStats.puzzles && wordleStats.puzzles.length > 0) {
@@ -199,7 +199,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
       window.wordleStats.board = window.wordleStats.board || [];
       window.wordleStats.board[guessNum + 1] = board.join('');
 
-      return `${board.join('')}${(possibilitiesText && guess != solution ? ` ${possibilitiesText}` : '')}`;
+      return `${board.join('')}${(possibilitiesText && guess != answer ? ` ${possibilitiesText}` : '')}`;
     }).join('\n');
   }
 }
