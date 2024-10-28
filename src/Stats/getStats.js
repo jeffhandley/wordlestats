@@ -199,7 +199,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
       window.wordleStats.board = window.wordleStats.board || [];
       window.wordleStats.board[guessNum + 1] = board.join('');
 
-      return `${board.join('')}${(possibilitiesText ? ` ${possibilitiesText}` : '')}`;
+      return `${board.join('')}${(possibilitiesText && guess != solution ? ` ${possibilitiesText}` : '')}`;
     }).join('\n');
   }
 }
