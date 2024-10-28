@@ -50,6 +50,18 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
         window.wordleStats = window.wordleStats || {};
         window.wordleStats.statsText = statsText;
 
+        window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
+          ...p,
+          text: `Possibilities after guess ${i + 1}: ${p.length.toLocaleString()}\n` +
+            (!p.words || p.length > 20 ? 'Too many to list' : `${(p.newWords || p.words).join(', ')}`) +
+            (!!p.usedWords && p.usedWords.length > 0 ?
+                `\n\nAlready used:\n${(p.usedWords.length > 20 ? 'Too many to list' : p.usedWords.join(', '))}` : ''
+            )
+        }));
+
+        const possibilitiesToShow = window.wordleStats.possibilities.filter(p => !!p.words && p.length <= 20)[0];
+        window.wordleStats.possibilitiesText = possibilitiesToShow ? possibilitiesToShow.text : 'Too many to list';
+
         callback(window.wordleStats.statsText);
 
         function getPercentages(guessStats) {
