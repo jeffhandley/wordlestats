@@ -1,4 +1,4 @@
-function getStats(callback) {
+function loadWordleStats(callback) {
   window.wordleStats = window.wordleStats || {};
 
   const now = new Date();
@@ -50,6 +50,13 @@ function getStats(callback) {
     }
 
     function puzzleHistoryContinuation() {
+      const lastPuzzle = window.wordleStats.puzzleHistory[0];
+      const displayElement = document.querySelector("button[aria-label='Subscribe to Games'] span");
+
+      if (displayElement) {
+        displayElement.innerText = `${lastPuzzle.print_date} (#${lastPuzzle.days_since_launch})`;
+      }
+
       if (!window.wordleStats.todaysPuzzle) {
         const todaysPuzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${todayIso}.json`;
         const fetchTodaysPuzzle = new XMLHttpRequest();
@@ -131,6 +138,34 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 
           const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
           window.wordleStats.possibilitiesText = possibilitiesToShow.join('\n');
+
+          window.wordleStats.getCurrentGuess = function getCurrentGuess() {
+            return [
+              ...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")
+            ].map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess)[0];
+          };
+
+          window.wordleStats.checkGuess = function checkGuess(guess) {
+            const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
+            const match = window.wordleStats.puzzleHistory.filter(p => p.solution.toLowerCase() == guess.toLowerCase())[0];
+
+            const title = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
+
+            if (match) {
+              const { solution, days_since_launch: puzzleNum, print_date: puzzleDate } = match;
+
+              return {
+                title,
+                text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`
+              };
+            }
+            else {
+              return {
+                title,
+                text: `"${guess.toUpperCase()}" has not been used.`
+              };
+            }
+          };
 
           callback(window.wordleStats);
 
