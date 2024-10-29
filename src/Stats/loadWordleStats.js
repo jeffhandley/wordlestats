@@ -148,8 +148,8 @@ function loadWordleStats(callback) {
           window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
 
           window.wordleStats.getPossibilities = (optGuesses, optSolution) => {
-            optGuesses = (optGuesses || guesses).map(g => g.toLowerCase());
-            optSolution = (optSolution || solution).toLowerCase();
+            optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim());
+            optSolution = (optSolution || solution).toLowerCase().trim();
             const { possibilities } = getBoard(optGuesses, optSolution);
 
             const totalPossibilities = possibilities[0].length;
@@ -175,7 +175,7 @@ function loadWordleStats(callback) {
             .map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
 
           window.wordleStats.checkGuess = (guess) => {
-            guess = guess.toLowerCase();
+            guess = guess.toLowerCase().trim();
 
             const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
             const match = window.wordleStats.puzzleHistory.filter(p => p.solution == guess)[0];
@@ -245,8 +245,8 @@ function loadWordleStats(callback) {
           }
 
           function getBoard(guesses, answer) {
-            guesses = guesses.map(g => g.toLowerCase());
-            answer = answer.toLowerCase();
+            guesses = guesses.map(g => g.toLowerCase().trim());
+            answer = answer.toLowerCase().trim();
 
             const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
             const letterMatches = Array(5).fill(alphabet);
