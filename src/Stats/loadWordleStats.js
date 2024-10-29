@@ -129,15 +129,27 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
           window.wordleStats.boardText = boardText;
           window.wordleStats.statsText = statsText;
 
-          window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
-            ...p,
-            text: i == 0 ? `Possible Words: ${p.length.toLocaleString()}\n` : (i == 1 ? '1️⃣' : (i == 2 ? '2️⃣' : (i == 3 ? '3️⃣' : (i == 4 ? '4️⃣' : (i == 5 ? '5️⃣' : '6️⃣'))))) +
-              ` ${guesses[i - 1].toUpperCase()}` + (guesses[i - 1] == solution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
-              (guesses[i - 1] == solution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
-          }));
+          window.wordleStats.getPossibilities = function getPossibilities() {
+            const totalPossibilities = window.wordleStats.possibilities[0].length;
+            const newPossibilities = totalPossibilities - window.wordleStats.puzzleHistory.length;
 
-          const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
-          window.wordleStats.possibilitiesText = possibilitiesToShow.join('\n');
+            const possibilitiesTitle = `Possible Words: ${totalPossibilities.toLocaleString()} (${newPossibilities.toLocaleString()} new)`;
+
+            window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
+              ...p,
+              text: i == 0 ? '' : (i == 1 ? '1️⃣' : (i == 2 ? '2️⃣' : (i == 3 ? '3️⃣' : (i == 4 ? '4️⃣' : (i == 5 ? '5️⃣' : '6️⃣'))))) +
+                ` ${guesses[i - 1].toUpperCase()}` + (guesses[i - 1] == solution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
+                (guesses[i - 1] == solution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
+            }));
+
+            const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
+            const possibilitiesText = possibilitiesToShow.join('\n');
+
+            return {
+              title: possibilitiesTitle,
+              text: possibilitiesText
+            };
+          }
 
           window.wordleStats.getCurrentGuess = function getCurrentGuess() {
             return [
@@ -151,19 +163,19 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
             const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
             const match = window.wordleStats.puzzleHistory.filter(p => p.solution == guess)[0];
 
-            const title = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
+            const guessCheckTitle = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
 
             if (match) {
               const { solution, days_since_launch: puzzleNum, print_date: puzzleDate } = match;
 
               return {
-                title,
+                title: guessCheckTitle,
                 text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`
               };
             }
             else {
               return {
-                title,
+                title: guessCheckTitle,
                 text: `"${guess.toUpperCase()}" has not been used.`
               };
             }
