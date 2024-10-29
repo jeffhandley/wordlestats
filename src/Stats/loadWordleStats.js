@@ -1,5 +1,18 @@
+let getNumberBlock = (num) =>
+  num == 1 ? '1️⃣':
+  num == 2 ? '2️⃣':
+  num == 3 ? '3️⃣':
+  num == 4 ? '4️⃣':
+  num == 5 ? '5️⃣':
+  num == 6 ? '6️⃣':
+             '⛔';
+
 function loadWordleStats(callback) {
   window.wordleStats = window.wordleStats || {};
+
+  if (!callback || typeof callback != 'function') {
+    callback = () => {};
+  }
 
   const now = new Date();
   const nowIso = now.toISOString();
@@ -108,42 +121,48 @@ function loadWordleStats(callback) {
           const guesses = game.boardState.filter(guess => guess != '');
           const guessPercentages = getPercentages(stats.guesses);
 
-          const boardText = `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
+          window.wordleStats.getBoard = (optGuesses, optSolution) =>
+            getBoard(optGuesses || guesses, optSolution || solution).board;
 
-${getBoard(guesses, solution)}`;
+          window.wordleStats.getBoardText = (useHashtag) =>
+            (useHashtag ? '#' : '') + `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6\n\n` +
+            getBoard(guesses, solution).board;
 
-          const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
+          window.wordleStats.boardText = window.wordleStats.getBoardText();
 
-${getBoard(guesses, solution)}
+          window.wordleStats.getStats = () =>
+            [1, 2, 3, 4, 5, 6, 'fail']
+            .map(num => getNumberBlock(num) + ' ' + getBar(stats.guesses, guessPercentages, num))
+            .join('\n');
 
-Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}
+          window.wordleStats.getStatsText = () =>
+            `Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}\n\n` +
+            window.wordleStats.getStats();
 
-1️⃣ ${getBar(stats.guesses, guessPercentages, 1)}
-2️⃣ ${getBar(stats.guesses, guessPercentages, 2)}
-3️⃣ ${getBar(stats.guesses, guessPercentages, 3)}
-4️⃣ ${getBar(stats.guesses, guessPercentages, 4)}
-5️⃣ ${getBar(stats.guesses, guessPercentages, 5)}
-6️⃣ ${getBar(stats.guesses, guessPercentages, 6)}
-⛔ ${getBar(stats.guesses, guessPercentages, "fail")}`;
+          window.wordleStats.statsText = window.wordleStats.getStatsText();
 
-          window.wordleStats.boardText = boardText;
-          window.wordleStats.statsText = statsText;
+          window.wordleStats.getBoardAndStatsText = () =>
+            window.wordleStats.getBoardText(true) + '\n\n' +
+            window.wordleStats.getStatsText();
 
-          window.wordleStats.getPossibilities = function getPossibilities() {
-            const totalPossibilities = window.wordleStats.possibilities[0].length;
+          window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
+
+          window.wordleStats.getPossibilities = (optGuesses, optSolution) => {
+            optGuesses = optGuesses || guesses;
+            optSolution = optSolution || solution;
+            const { possibilities } = getBoard(optGuesses, optSolution);
+
+            const totalPossibilities = possibilities[0].length;
             const newPossibilities = totalPossibilities - window.wordleStats.puzzleHistory.length;
 
             const possibilitiesTitle = `Possible Words: ${totalPossibilities.toLocaleString()} (${newPossibilities.toLocaleString()} new)`;
 
-            window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
+            const possibilitiesText = possibilities.map((p, i) => ({
               ...p,
-              text: i == 0 ? '' : (i == 1 ? '1️⃣' : (i == 2 ? '2️⃣' : (i == 3 ? '3️⃣' : (i == 4 ? '4️⃣' : (i == 5 ? '5️⃣' : '6️⃣'))))) +
-                ` ${guesses[i - 1].toUpperCase()}` + (guesses[i - 1] == solution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
-                (guesses[i - 1] == solution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
-            })).filter((p, i) => i > 0);
-
-            const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
-            const possibilitiesText = possibilitiesToShow.join('\n');
+              text: (i == 0 ? '' : `${getNumberBlock(i)} ${optGuesses[i - 1].toUpperCase()}`) +
+                (optGuesses[i - 1] == optSolution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
+                (optGuesses[i - 1] == optSolution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
+            })).filter((p, i) => i > 0).map(p => p.text).join('\n');
 
             return {
               title: possibilitiesTitle,
@@ -151,13 +170,11 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
             };
           }
 
-          window.wordleStats.getCurrentGuess = function getCurrentGuess() {
-            return [
-              ...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")
-            ].map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
-          };
+          window.wordleStats.getCurrentGuess = () =>
+            [...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")]
+            .map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
 
-          window.wordleStats.checkGuess = function checkGuess(guess) {
+          window.wordleStats.checkGuess = (guess) => {
             guess = guess.toLowerCase();
 
             const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
@@ -231,9 +248,9 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
             const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
             const letterMatches = Array(5).fill(alphabet);
 
-            window.wordleStats.possibilities = [{ length: window.wordleStats.dictionary.length}];
+            const possibilities = [{ length: window.wordleStats.dictionary.length}];
 
-            return guesses.map((guess, guessNum) => {
+            const boardText = guesses.map((guess, guessNum) => {
               const board = Array(5).fill('⬛'),
                     guessLetterUsed = Array(5).fill(false),
                     answerLetterUsed = Array(5).fill(false),
@@ -286,38 +303,39 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
                 ...[...Object.keys(letterCounts)].map(l => l.repeat(letterCounts[l]).split('').join('.*'))
               ];
 
-              const possibilities = window.wordleStats.dictionary.filter(word => patterns.map(p => word.match(p)).reduce((a, e) => a && e));
+              const remainingWords = window.wordleStats.dictionary.filter(word => patterns.map(p => word.match(p)).reduce((a, e) => a && e));
               let possibilitiesText = '';
 
-              possibilitiesText = `${possibilities.length.toLocaleString()}`;
+              possibilitiesText = `${remainingWords.length.toLocaleString()}`;
 
-              window.wordleStats = window.wordleStats || {};
-              window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
+              possibilities[guessNum + 1] = { length: remainingWords.length };
 
               if (guess != answer) {
-                window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
+                possibilities[guessNum + 1].words = remainingWords.sort();
 
                 if (!!wordleStats.puzzleHistory && wordleStats.puzzleHistory.length > 0) {
                   const solutions = wordleStats.puzzleHistory.map(p => p.solution.toLowerCase());
-                  const usedPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) > -1);
-                  const newPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
+                  const usedPossibilities = remainingWords.filter(p => solutions.indexOf(p.toLowerCase()) > -1);
+                  const newPossibilities = remainingWords.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
-                  if (newPossibilities.length != possibilities.length) {
-                    possibilitiesText = `${possibilities.length.toLocaleString().padEnd(4)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(10))}`;
+                  if (newPossibilities.length != remainingWords.length) {
+                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(4)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(10))}`;
 
-                    window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
-                    window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
+                    possibilities[guessNum + 1].newWords = newPossibilities;
+                    possibilities[guessNum + 1].usedWords = usedPossibilities;
                   }
                 }
               }
 
-              window.wordleStats.possibilities[guessNum + 1].possibilitiesText = possibilitiesText;
-
-              window.wordleStats.board = window.wordleStats.board || [];
-              window.wordleStats.board[guessNum + 1] = board.join('');
+              possibilities[guessNum + 1].possibilitiesText = possibilitiesText;
 
               return `${board.join('')}${(possibilitiesText && guess != answer ? ` ${possibilitiesText}` : '')}`;
             }).join('\n');
+
+            return {
+              board: boardText,
+              possibilities
+            };
           }
         }
 
