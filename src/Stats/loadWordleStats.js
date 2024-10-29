@@ -303,7 +303,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
                   const newPossibilities = possibilities.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
                   if (newPossibilities.length != possibilities.length) {
-                    possibilitiesText = `${possibilities.length.toLocaleString().padEnd(2)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(8))}`;
+                    possibilitiesText = `${possibilities.length.toLocaleString().padEnd(4)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(10))}`;
 
                     window.wordleStats.possibilities[guessNum + 1].newWords = newPossibilities;
                     window.wordleStats.possibilities[guessNum + 1].usedWords = usedPossibilities;
