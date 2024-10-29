@@ -142,12 +142,14 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
           window.wordleStats.getCurrentGuess = function getCurrentGuess() {
             return [
               ...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")
-            ].map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess)[0];
+            ].map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
           };
 
           window.wordleStats.checkGuess = function checkGuess(guess) {
+            guess = guess.toLowerCase();
+
             const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
-            const match = window.wordleStats.puzzleHistory.filter(p => p.solution.toLowerCase() == guess.toLowerCase())[0];
+            const match = window.wordleStats.puzzleHistory.filter(p => p.solution == guess)[0];
 
             const title = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
 
