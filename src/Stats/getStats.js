@@ -1,4 +1,4 @@
-function getStats(callback, boardOnly) {
+function getStats(callback) {
   window.wordleStats = window.wordleStats || {};
 
   const now = new Date();
@@ -9,7 +9,7 @@ function getStats(callback, boardOnly) {
     const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordle-stats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
 
     const fetchDictionary = new XMLHttpRequest();
-    const fetchDictionaryError = () => callback(`Failed to fetch the dictionary from '${dictionaryUrl}`);
+    const fetchDictionaryError = () => callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
     fetchDictionary.onerror = fetchDictionaryError;
     fetchDictionary.onload = () => {
       if (fetchDictionary.readyState != XMLHttpRequest.DONE || fetchDictionary.status != 200) {
@@ -101,9 +101,11 @@ function getStats(callback, boardOnly) {
           const guesses = game.boardState.filter(guess => guess != '');
           const guessPercentages = getPercentages(stats.guesses);
 
-          const statsText = boardOnly ? `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
+          const boardText = `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
 
-${getBoard(guesses, solution)}` : `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
+${getBoard(guesses, solution)}`;
+
+          const statsText = `#Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6
 
 ${getBoard(guesses, solution)}
 
@@ -117,7 +119,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
 6️⃣ ${getBar(stats.guesses, guessPercentages, 6)}
 ⛔ ${getBar(stats.guesses, guessPercentages, "fail")}`;
 
-          window.wordleStats = window.wordleStats || {};
+          window.wordleStats.boardText = boardText;
           window.wordleStats.statsText = statsText;
 
           window.wordleStats.possibilities = window.wordleStats.possibilities.map((p, i) => ({
@@ -130,7 +132,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
           const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
           window.wordleStats.possibilitiesText = possibilitiesToShow.join('\n');
 
-          callback(window.wordleStats.statsText);
+          callback(window.wordleStats);
 
           function getPercentages(guessStats) {
             let percentages = Object.keys(guessStats)
