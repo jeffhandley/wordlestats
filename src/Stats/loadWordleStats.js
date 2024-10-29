@@ -148,7 +148,7 @@ function loadWordleStats(callback) {
           window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
 
           window.wordleStats.getPossibilities = (optGuesses, optSolution) => {
-            optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim());
+            optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim()).filter(g => !!g);
             optSolution = (optSolution || solution).toLowerCase().trim();
             const { possibilities } = getBoard(optGuesses, optSolution);
 
@@ -245,7 +245,7 @@ function loadWordleStats(callback) {
           }
 
           function getBoard(guesses, answer) {
-            guesses = guesses.map(g => g.toLowerCase().trim());
+            guesses = guesses.map(g => g.toLowerCase().trim()).filter(g => !!g);
             answer = answer.toLowerCase().trim();
 
             const alphabet = '[abcdefghijklmnopqrstuvwxyz]';
