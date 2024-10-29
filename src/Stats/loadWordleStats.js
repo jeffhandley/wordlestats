@@ -140,7 +140,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
               text: i == 0 ? '' : (i == 1 ? '1️⃣' : (i == 2 ? '2️⃣' : (i == 3 ? '3️⃣' : (i == 4 ? '4️⃣' : (i == 5 ? '5️⃣' : '6️⃣'))))) +
                 ` ${guesses[i - 1].toUpperCase()}` + (guesses[i - 1] == solution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
                 (guesses[i - 1] == solution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
-            }));
+            })).filter((p, i) => i > 0);
 
             const possibilitiesToShow = window.wordleStats.possibilities.map(p => p.text);
             const possibilitiesText = possibilitiesToShow.join('\n');
@@ -294,7 +294,7 @@ Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxS
               window.wordleStats = window.wordleStats || {};
               window.wordleStats.possibilities[guessNum + 1] = { length: possibilities.length };
 
-              if (possibilities.length <= 20 && guess != answer) {
+              if (guess != answer) {
                 window.wordleStats.possibilities[guessNum + 1].words = possibilities.sort();
 
                 if (!!wordleStats.puzzleHistory && wordleStats.puzzleHistory.length > 0) {
