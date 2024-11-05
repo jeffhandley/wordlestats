@@ -7,6 +7,17 @@ let getNumberBlock = (num) =>
   num == 6 ? '6️⃣':
              '⛔';
 
+function displayStatsLoaded(lastPuzzleNum, lastPuzzleDate, thisPuzzleNum, thisPuzzleDate) {
+  const header = document.querySelector("header section menu");
+  if (!header) return;
+
+  const statsHeader = header.firstChild.cloneNode();
+  statsHeader.style = "color:var(--color-tone-1);";
+  statsHeader.innerText = `Last loaded: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()}). Today: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()}).`;
+
+  header.replaceWith(statsHeader);
+}
+
 function loadWordleStats(callback) {
   window.wordleStats = window.wordleStats || {};
 
@@ -63,13 +74,6 @@ function loadWordleStats(callback) {
     }
 
     function puzzleHistoryContinuation() {
-      const lastPuzzle = window.wordleStats.puzzleHistory[0];
-      const displayElement = document.querySelector("button[aria-label='Subscribe to Games'] span");
-
-      if (displayElement) {
-        displayElement.innerText = `${lastPuzzle.print_date} (#${lastPuzzle.days_since_launch})`;
-      }
-
       if (!window.wordleStats.todaysPuzzle) {
         const todaysPuzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${todayIso}.json`;
         const fetchTodaysPuzzle = new XMLHttpRequest();
@@ -101,6 +105,10 @@ function loadWordleStats(callback) {
 
       function todaysPuzzleContinuation() {
         const { solution, puzzleId, puzzleNum, puzzleDate } = window.wordleStats.todaysPuzzle;
+        const lastPuzzle = window.wordleStats.puzzleHistory[0];
+
+        displayStatsLoaded(lastPuzzle.days_since_launch, lastPuzzle.print_date, puzzleNum, puzzleDate);
+
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
         const fetchStatsError = () => callback(`Failed to fetch stats from '${statsUrl}'`);
