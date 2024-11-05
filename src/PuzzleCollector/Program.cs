@@ -27,7 +27,7 @@ using HttpClient client = new HttpClient();
 List<Puzzle> downloadedPuzzles = new();
 int count = 0;
 
-for (DateOnly date = firstPuzzle; date < todayPST && count < 100; date = date.AddDays(1))
+for (DateOnly date = firstPuzzle; date <= todayPST && count < 100; date = date.AddDays(1))
 {
     if (!savedPuzzles.Any(p => p.print_date == date))
     {

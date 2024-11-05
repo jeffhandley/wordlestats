@@ -12,8 +12,8 @@ function displayStatsLoaded(lastPuzzleNum, lastPuzzleDate, thisPuzzleNum, thisPu
   if (!header) return;
 
   const statsHeader = header.firstChild.cloneNode();
-  statsHeader.style = "color:var(--color-tone-1);";
-  statsHeader.innerText = `Last loaded: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()}). Today: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()}).`;
+  statsHeader.style = "color:var(--color-tone-1); text-align:right;";
+  statsHeader.innerHTML = `History: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />Today: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
 
   header.replaceWith(statsHeader);
 }
@@ -105,6 +105,12 @@ function loadWordleStats(callback) {
 
       function todaysPuzzleContinuation() {
         const { solution, puzzleId, puzzleNum, puzzleDate } = window.wordleStats.todaysPuzzle;
+
+        // Make sure today's puzzle isn't in history
+        while (window.wordleStats.puzzleHistory[0].days_since_launch >= puzzleNum) {
+          window.wordleStats.puzzleHistory.shift();
+        }
+
         const lastPuzzle = window.wordleStats.puzzleHistory[0];
 
         displayStatsLoaded(lastPuzzle.days_since_launch, lastPuzzle.print_date, puzzleNum, puzzleDate);
