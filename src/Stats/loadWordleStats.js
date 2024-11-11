@@ -161,9 +161,11 @@ function loadWordleStats(callback) {
 
           window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
 
-          window.wordleStats.getPossibilities = (optGuesses, optSolution) => {
+          window.wordleStats.getPossibilities = (optGuesses, optSolution, maxWords) => {
             optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim()).filter(g => !!g);
             optSolution = (optSolution || solution).toLowerCase().trim();
+            maxWords = maxWords || 20;
+            
             const { possibilities } = getBoard(optGuesses, optSolution);
 
             const totalPossibilities = possibilities[0].length;
@@ -175,7 +177,7 @@ function loadWordleStats(callback) {
               ...p,
               text: (i == 0 ? '' : `${getNumberBlock(i)} ${optGuesses[i - 1].toUpperCase()}`) +
                 (optGuesses[i - 1] == optSolution ? '' : ` : ${p.length.toLocaleString()}` + (!p.newWords ? '' : ` (${p.newWords.length} new)`)) +
-                (optGuesses[i - 1] == optSolution || !p.words || p.length > 20 ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
+                (optGuesses[i - 1] == optSolution || !p.words || p.length > maxWords ? '' : `\n${p.words.map(w => !p.usedWords || p.usedWords.indexOf(w) == -1 ? w : `~${w}~`).join(', ')}\n`)
             })).filter((p, i) => i > 0).map(p => p.text).join('\n');
 
             return {
