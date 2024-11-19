@@ -134,12 +134,13 @@ function loadWordleStats(callback) {
           const gameWon = (game.status == 'WIN');
           const guesses = game.boardState.filter(guess => guess != '');
           const guessPercentages = getPercentages(stats.guesses);
+          const { hardMode } = game;
 
           window.wordleStats.getBoard = (optGuesses, optSolution) =>
             getBoard(optGuesses || guesses, optSolution || solution).board;
 
           window.wordleStats.getBoardText = (useHashtag) =>
-            (useHashtag ? '#' : '') + `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6\n\n` +
+            (useHashtag ? '#' : '') + `Wordle ${puzzleNum.toLocaleString()} ${(gameWon ? guesses.length : "X")}/6${(hardMode ? '*' : '')}\n\n` +
             getBoard(guesses, solution).board;
 
           window.wordleStats.boardText = window.wordleStats.getBoardText();
@@ -165,7 +166,7 @@ function loadWordleStats(callback) {
             optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim()).filter(g => !!g);
             optSolution = (optSolution || solution).toLowerCase().trim();
             maxWords = maxWords || 20;
-            
+
             const { possibilities } = getBoard(optGuesses, optSolution);
 
             const totalPossibilities = possibilities[0].length;
