@@ -31,7 +31,7 @@ Games: 729 | Streak: 109 | Max: 151
 ⛔ ⠗ [2﹪] 12
 ```
 
-![Share with WordleStats](/media/Share-with-WordleStats.gif)
+![Share with WordleStats](/assets/images/Share-with-WordleStats.gif)
 
 ### Check Guess with WordleStats
 
@@ -41,7 +41,7 @@ Do you wish that Wordle would warn you if a guess has already appeared as a prev
 
 Enter your guess into the Wordle game and invoke the shortcut. A message will be shown indicating whether the pending guess has already been used. Alternatively, if you invoke the shortcut before entering your guess into the game, you can type your guess into a prompt first. This can be helpful if you want to be extra careful about entering your guess.
 
-![Check Guess with WordleStats](/media/Check-Guess-with-WordleStats.gif)
+![Check Guess with WordleStats](/assets/images/Check-Guess-with-WordleStats.gif)
 
 ### Show Possibilities with WordleStats
 
@@ -55,7 +55,7 @@ Note that this shortcut can be used to gain a cheat in the game. If you invoke t
 
 Words are shown for each guess were 25 or fewer possibilities remained. There's an additional 'Show More Possibilities with WordleStats' shortcut that prompts for the maximum word count.
 
-![Show Possibilities with WordleStats](/media/Show-Possibilities-with-WordleStats.gif)
+![Show Possibilities with WordleStats](/assets/images/Show-Possibilities-with-WordleStats.gif)
 
 ## How it Works
 
