@@ -30,7 +30,7 @@ function loadWordleStats(callback) {
   const todayIso = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().substr(0, 10);
 
   if (!window.wordleStats.dictionary) {
-    const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordle-stats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
+    const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
@@ -53,7 +53,7 @@ function loadWordleStats(callback) {
 
   function dictionaryContinuation() {
     if (!window.wordleStats.puzzleHistory) {
-      const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordle-stats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
+      const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
       const fetchPuzzleHistoryError = () => callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
       fetchPuzzleHistory.onerror = fetchPuzzleHistoryError;
@@ -162,10 +162,10 @@ function loadWordleStats(callback) {
 
           window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
 
-          window.wordleStats.getPossibilities = (optGuesses, optSolution, maxWords) => {
+          window.wordleStats.getPossibilities = (maxWords, optGuesses, optSolution) => {
+            maxWords = maxWords || 25;
             optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim()).filter(g => !!g);
             optSolution = (optSolution || solution).toLowerCase().trim();
-            maxWords = maxWords || 20;
 
             const { possibilities } = getBoard(optGuesses, optSolution);
 
