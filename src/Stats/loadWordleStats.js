@@ -30,7 +30,7 @@ function loadWordleStats(callback) {
   const todayIso = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().substr(0, 10);
 
   if (!window.wordleStats.dictionary) {
-    const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordle-stats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
+    const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
@@ -53,7 +53,7 @@ function loadWordleStats(callback) {
 
   function dictionaryContinuation() {
     if (!window.wordleStats.puzzleHistory) {
-      const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordle-stats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
+      const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
       const fetchPuzzleHistoryError = () => callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
       fetchPuzzleHistory.onerror = fetchPuzzleHistoryError;
@@ -162,10 +162,10 @@ function loadWordleStats(callback) {
 
           window.wordleStats.boardAndStatsText = window.wordleStats.getBoardAndStatsText();
 
-          window.wordleStats.getPossibilities = (optGuesses, optSolution, maxWords) => {
+          window.wordleStats.getPossibilities = (maxWords, optGuesses, optSolution) => {
+            maxWords = maxWords || 25;
             optGuesses = (optGuesses || guesses).map(g => g.toLowerCase().trim()).filter(g => !!g);
             optSolution = (optSolution || solution).toLowerCase().trim();
-            maxWords = maxWords || 20;
 
             const { possibilities } = getBoard(optGuesses, optSolution);
 
@@ -269,6 +269,7 @@ function loadWordleStats(callback) {
             const letterMatches = Array(5).fill(alphabet);
 
             const possibilities = [{ length: window.wordleStats.dictionary.length}];
+            let maxRemainingLength = 1, maxNewWordsLength = 1;
 
             const boardText = guesses.map((guess, guessNum) => {
               const board = Array(5).fill('⬛'),
@@ -339,7 +340,13 @@ function loadWordleStats(callback) {
                   const newPossibilities = remainingWords.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
                   if (newPossibilities.length != remainingWords.length) {
-                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(4)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(10))}`;
+                    const remainingText = remainingWords.length.toLocaleString();
+                    const newWordsText = newPossibilities.length.toLocaleString();
+
+                    if (remainingText.length > maxRemainingLength) maxRemainingLength = remainingText.length;
+                    if (newWordsText.length > maxNewWordsLength) maxNewWordsLength = newWordsText.length;
+
+                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(maxRemainingLength)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(maxNewWordsLength + 6))}`;
 
                     possibilities[guessNum + 1].newWords = newPossibilities;
                     possibilities[guessNum + 1].usedWords = usedPossibilities;
