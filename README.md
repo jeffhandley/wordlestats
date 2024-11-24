@@ -63,13 +63,13 @@ The WordleStats shortcuts use JavaScript to interact with the Wordle game in a n
 
 The game board state and player stats are extracted from the game's UI and by making web requests to the same data endpoints the game itself uses.
 
-* https://www.nytimes.com/svc/wordle/v2/2024-11-23.json exposes the `solution`, `print_date`, `days_since_launch` (puzzle number) for the puzzle that day, along with an `id` and that puzzle's `editor`.
+* [https://www.nytimes.com/svc/wordle/v2/2024-11-23.json](https://www.nytimes.com/svc/wordle/v2/2024-11-23.json) exposes the `solution`, `print_date`, `days_since_launch` (puzzle number) for the puzzle that day, along with an `id` and that puzzle's `editor`.
 * The `id` value in that data is a reference number to retrieve the player's board state and stats as of that puzzle. For that date, the `id` value is `1098`, which is then used in the next web request.
-* https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=1098 exposes the `boardState` and `legacyStats`.
+* [https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=1098](https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=1098) exposes the `boardState` and `legacyStats`.
 
 Other game data might be included in the `games/state` response, depending on which NYTimes games you play. The requests to these addresses must be made using JavaScript injected into the Wordle game's page so that the requests include the appropriate cookies and referrer on the request.
 
-In addition to loading data from the Wordle game itself, WordleStats also provides some of its own data. The full dictionary of legal Wordle words is saved in this repository at [`src/Stats/dictionary.json`](https://github.com/jeffhandley/wordlestats/blob/main/src/Stats/dictionary.json). To power the WordleStats features that understand what words have already appeared as solutions, the history of all puzzles is also included in this repository at `src/PuzzleCollector/puzzles.json`. Both of these sets of data are downloaded when running the shortcuts. **SPOILER WARNING -- The `puzzle.json` file might already contain today's or even tomorrow's puzzle!**.
+In addition to loading data from the Wordle game itself, WordleStats also provides some of its own data. The full dictionary of legal Wordle words is saved in this repository at [`src/Stats/dictionary.json`](https://github.com/jeffhandley/wordlestats/blob/main/src/Stats/dictionary.json). To power the WordleStats features that understand what words have already appeared as solutions, the history of all puzzles is also included in this repository at `src/PuzzleCollector/puzzles.json`. Both of these sets of data are downloaded when running the shortcuts. **SPOILER WARNING -- The `puzzles.json` file might already contain today's or even tomorrow's puzzle!**.
 
 With this design for the shortcuts, permissions must be granted when using them for the first time. You will be prompted to allow the shortcut to download data from `https://www.wordlestats.com`, and also to interact with `https://www.nytimes.com/`. Both requests must be granted for the shortcuts to work.
 
