@@ -39,7 +39,7 @@ function loadWordleStats(callback) {
 
     if (dictionary !== true || history !== true || todaysPuzzle !== true || playerStats !== true) {
       message = message || 'WordleStats Failed to Load.';
-      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? 'Yes' : 'No')}. History: ${(!!history ? 'Yes' : 'No')}. Puzzle: ${(!!todaysPuzzle ? 'Yes' : 'No')}. Stats: ${(!!playerStats ? 'Yes' : 'No')}`);
+      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? '✅' : '❌')} History: ${(!!history ? '✅' : '❌')} Puzzle: ${(!!todaysPuzzle ? '✅' : '❌')} Stats: ${(!!playerStats ? '✅' : '❌')}`);
     }
     else {
       message = message || 'WordleStats Loaded.';
