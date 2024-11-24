@@ -8,22 +8,25 @@ let getNumberBlock = (num) =>
              '⛔';
 
 function displayStatsLoaded(lastPuzzleNum, lastPuzzleDate, thisPuzzleNum, thisPuzzleDate) {
+  let statsLoadedText = `Today's Puzzle: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
+
+  if (lastPuzzleNum < thisPuzzleNum - 1) {
+    statsLoadedText = `WordleStats - Last Known Puzzle: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />${statsLoadedText}`;
+  }
+  else {
+    statsLoadedText = `WordleStats Loaded<br />${statsLoadedText}`;
+  }
+
+  displayMessageInHeader(statsLoadedText);
+}
+
+function displayMessageInHeader(message) {
   const header = document.querySelector("header section menu");
   if (!header) return;
 
   const statsHeader = header.firstChild.cloneNode();
   statsHeader.style = "color:var(--color-tone-1); text-align:right;";
-
-  let statsHeaderText = `Today's Puzzle: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
-
-  if (lastPuzzleNum < thisPuzzleNum - 1) {
-    statsHeaderText = `WordleStats - Last Known Puzzle: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />${statsHeaderText}`;
-  }
-  else {
-    statsHeaderText = `WordleStats Loaded<br />${statsHeaderText}`;
-  }
-
-  statsHeader.innerHTML = statsHeaderText;
+  statsHeader.innerHTML = message;
 
   header.replaceWith(statsHeader);
 }
@@ -43,7 +46,11 @@ function loadWordleStats(callback) {
     const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
 
     const fetchDictionary = new XMLHttpRequest();
-    const fetchDictionaryError = () => callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
+    const fetchDictionaryError = () => {
+      displayMessageInHeader('WordleStats failed to load. Could not download the dictionary of legal words.');
+      callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
+    };
+
     fetchDictionary.onerror = fetchDictionaryError;
     fetchDictionary.onload = () => {
       if (fetchDictionary.readyState != XMLHttpRequest.DONE || fetchDictionary.status != 200) {
@@ -65,7 +72,11 @@ function loadWordleStats(callback) {
     if (!window.wordleStats.puzzleHistory) {
       const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
-      const fetchPuzzleHistoryError = () => callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
+      const fetchPuzzleHistoryError = () => {
+        displayMessageInHeader('WordleStats failed to load. Could not download the puzzle history.');
+        callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
+      };
+
       fetchPuzzleHistory.onerror = fetchPuzzleHistoryError;
       fetchPuzzleHistory.onload = () => {
         if (fetchPuzzleHistory.readyState != XMLHttpRequest.DONE || fetchPuzzleHistory.status != 200) {
@@ -87,7 +98,11 @@ function loadWordleStats(callback) {
       if (!window.wordleStats.todaysPuzzle) {
         const todaysPuzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${todayIso}.json`;
         const fetchTodaysPuzzle = new XMLHttpRequest();
-        const fetchTodaysPuzzleError = () => callback(`Failed to fetch today's puzzle from '${todaysPuzzleUrl}'`);
+        const fetchTodaysPuzzleError = () => {
+          displayMessageInHeader('WordleStats failed to load. Could not download today\'s puzzle.');
+          callback(`Failed to fetch today's puzzle from '${todaysPuzzleUrl}'`);
+        };
+
         fetchTodaysPuzzle.onerror = fetchTodaysPuzzleError;
         fetchTodaysPuzzle.onload = () => {
           if (fetchTodaysPuzzle.readyState != XMLHttpRequest.DONE || fetchTodaysPuzzle.status != 200) {
@@ -121,13 +136,13 @@ function loadWordleStats(callback) {
           window.wordleStats.puzzleHistory.shift();
         }
 
-        const lastPuzzle = window.wordleStats.puzzleHistory[0];
-
-        displayStatsLoaded(lastPuzzle.days_since_launch, lastPuzzle.print_date, puzzleNum, puzzleDate);
-
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
-        const fetchStatsError = () => callback(`Failed to fetch stats from '${statsUrl}'`);
+        const fetchStatsError = () => {
+          displayMessageInHeader('WordleStats failed to load. Could not download player stats.');
+          callback(`Failed to fetch stats from '${statsUrl}'`);
+        };
+
         fetchStats.onerror = fetchStatsError;
         fetchStats.onload = () => {
           if (fetchStats.readyState != XMLHttpRequest.DONE || fetchStats.status != 200) {
@@ -224,6 +239,9 @@ function loadWordleStats(callback) {
               };
             }
           };
+
+          const lastPuzzle = window.wordleStats.puzzleHistory[0];
+          displayStatsLoaded(lastPuzzle.days_since_launch, lastPuzzle.print_date, puzzleNum, puzzleDate);
 
           callback(window.wordleStats);
 
