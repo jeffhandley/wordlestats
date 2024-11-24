@@ -75,7 +75,7 @@ With this design for the shortcuts, permissions must be granted when using them 
 
 If you'd like to review the JavaScript code that drives all of the functionality, check out [`src/Stats/loadWordleStats.js`](https://github.com/jeffhandley/wordlestats/blob/main/src/Stats/loadWordleStats.js). Note that this code is written to be compatible with iOS Safari. Unfortunately, `async`/`await` and `fetch` are not available, so classic `XMLHttpRequest` and `JSON.parse` code is needed.
 
-Each day's puzzle is collected into this repository using a [GitHub Action](https://github.com/jeffhandley/wordlestats/blob/main/.github/workflows/puzzle-collector.yml) that invokes the [`src/PuzzleCollector/Program.cs`](/src/PuzzleCollector/Program.cs) console application written in C#/.NET.
+Each day's puzzle is collected into this repository using a [GitHub Action](https://github.com/jeffhandley/wordlestats/blob/main/.github/workflows/puzzle-collector.yml) that invokes the [`src/PuzzleCollector/Program.cs`](https://github.com/jeffhandley/wordlestats/blob/main/src/PuzzleCollector/Program.cs) console application written in C#/.NET.
 
 ## About
 
