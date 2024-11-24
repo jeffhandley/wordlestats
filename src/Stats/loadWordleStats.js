@@ -13,7 +13,17 @@ function displayStatsLoaded(lastPuzzleNum, lastPuzzleDate, thisPuzzleNum, thisPu
 
   const statsHeader = header.firstChild.cloneNode();
   statsHeader.style = "color:var(--color-tone-1); text-align:right;";
-  statsHeader.innerHTML = `History: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />Today: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
+
+  let statsHeaderText = `Today's Puzzle: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
+
+  if (lastPuzzleNum < thisPuzzleNum - 1) {
+    statsHeaderText = `WordleStats - Last Known Puzzle: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />${statsHeaderText}`;
+  }
+  else {
+    statsHeaderText = `WordleStats Loaded<br />${statsHeaderText}`;
+  }
+
+  statsHeader.innerHTML = statsHeaderText;
 
   header.replaceWith(statsHeader);
 }
