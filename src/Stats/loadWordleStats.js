@@ -65,7 +65,7 @@ function loadWordleStats(callback) {
   const todayIso = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString().substr(0, 10);
 
   if (!window.wordleStats.dictionary) {
-    const dictionaryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/Stats/dictionary.json?${nowIso}`;
+    const dictionaryUrl = `https://www.wordlestats.com/src/Stats/dictionary.json?${nowIso}`;
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => {
@@ -92,7 +92,7 @@ function loadWordleStats(callback) {
 
   function dictionaryContinuation() {
     if (!window.wordleStats.puzzleHistory) {
-      const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
+      const puzzleHistoryUrl = `https://www.wordlestats.com/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
       const fetchPuzzleHistoryError = () => {
         displayWordleStatsLoadState('WordleStats failed to load puzzle history.');

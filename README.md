@@ -71,7 +71,7 @@ Other game data might be included in the `games/state` response, depending on wh
 
 In addition to loading data from the Wordle game itself, WordleStats also provides some of its own data. The full dictionary of legal Wordle words is saved in this repository at [`src/Stats/dictionary.json`](https://github.com/jeffhandley/wordlestats/blob/main/src/Stats/dictionary.json). To power the WordleStats features that understand what words have already appeared as solutions, the history of all puzzles is also included in this repository at `src/PuzzleCollector/puzzles.json`. Both of these sets of data are downloaded when running the shortcuts. **SPOILER WARNING -- The `puzzle.json` file might already contain today's or even tomorrow's puzzle!**.
 
-With this design for the shortcuts, permissions must be granted when using them for the first time. You will be prompted to allow the shortcut to download data from `https://raw.githubusercontent.com`, and also to interact with `https://www.nytimes.com/`. Both requests must be granted for the shortcuts to work.
+With this design for the shortcuts, permissions must be granted when using them for the first time. You will be prompted to allow the shortcut to download data from `https://www.wordlestats.com`, and also to interact with `https://www.nytimes.com/`. Both requests must be granted for the shortcuts to work.
 
 If you'd like to review the JavaScript code that drives all of the functionality, check out [`src/Stats/loadWordleStats.js`](https://github.com/jeffhandley/wordlestats/blob/main/src/Stats/loadWordleStats.js). Note that this code is written to be compatible with iOS Safari. Unfortunately, `async`/`await` and `fetch` are not available, so classic `XMLHttpRequest` and `JSON.parse` code is needed.
 
