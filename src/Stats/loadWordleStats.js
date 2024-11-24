@@ -269,6 +269,7 @@ function loadWordleStats(callback) {
             const letterMatches = Array(5).fill(alphabet);
 
             const possibilities = [{ length: window.wordleStats.dictionary.length}];
+            let maxRemainingLength = 1, maxNewWordsLength = 1;
 
             const boardText = guesses.map((guess, guessNum) => {
               const board = Array(5).fill('⬛'),
@@ -339,7 +340,13 @@ function loadWordleStats(callback) {
                   const newPossibilities = remainingWords.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
                   if (newPossibilities.length != remainingWords.length) {
-                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(6)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(12))}`;
+                    const remainingText = remainingWords.length.toLocaleString();
+                    const newWordsText = newPossibilities.length.toLocaleString();
+
+                    if (remainingText.length > maxRemainingLength) maxRemainingLength = remainingText.length;
+                    if (newWordsText.length > maxNewWordsLength) maxNewWordsLength = newWordsText.length;
+
+                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(maxRemainingLength)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(maxNewWordsLength + 6))}`;
 
                     possibilities[guessNum + 1].newWords = newPossibilities;
                     possibilities[guessNum + 1].usedWords = usedPossibilities;
