@@ -195,7 +195,7 @@ function loadWordleStats(callback) {
 
             return {
               title: guessCheckTitle,
-              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? '\n\nIt was NOT found in the word list though, so it might not be playable.' : ' It is in the word list.')}`
+              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? '\n\nIt was NOT found in the word list though, so it might not be playable.' : '')}`
             };
           }
         };
