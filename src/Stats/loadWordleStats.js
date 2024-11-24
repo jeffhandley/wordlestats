@@ -39,7 +39,7 @@ function loadWordleStats(callback) {
 
     if (dictionary !== true || history !== true || todaysPuzzle !== true || playerStats !== true) {
       message = message || 'WordleStats Failed to Load.';
-      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? '✅' : '❌')} History: ${(!!history ? '✅' : '❌')} Puzzle: ${(!!todaysPuzzle ? '✅' : '❌')} Stats: ${(!!playerStats ? '✅' : '❌')}`);
+      displayHeader(`${message}<br />Word List: ${(!!dictionary ? '✅' : '❌')} History: ${(!!history ? '✅' : '❌')} Puzzle: ${(!!todaysPuzzle ? '✅' : '❌')} Stats: ${(!!playerStats ? '✅' : '❌')}`);
     }
     else {
       message = message || 'WordleStats Loaded.';
@@ -69,8 +69,8 @@ function loadWordleStats(callback) {
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => {
-      displayWordleStatsLoadState('WordleStats failed to load the dictionary.');
-      callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
+      displayWordleStatsLoadState('WordleStats failed to load the word list.');
+      callback(`Failed to fetch the word list from '${dictionaryUrl}'`);
     };
 
     fetchDictionary.onerror = fetchDictionaryError;
@@ -195,7 +195,7 @@ function loadWordleStats(callback) {
 
             return {
               title: guessCheckTitle,
-              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? ' It was NOT found in the dictionary though, so it might not be playable.' : ' It was found in the dictionary and should be playable.')}`
+              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? '\n\nIt was NOT found in the word list though, so it might not be playable.' : ' It is in the word list.')}`
             };
           }
         };
