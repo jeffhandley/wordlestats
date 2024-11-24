@@ -339,7 +339,7 @@ function loadWordleStats(callback) {
                   const newPossibilities = remainingWords.filter(p => solutions.indexOf(p.toLowerCase()) == -1);
 
                   if (newPossibilities.length != remainingWords.length) {
-                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(4)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(10))}`;
+                    possibilitiesText = `${remainingWords.length.toLocaleString().padEnd(6)} ${(`(${newPossibilities.length.toLocaleString()} new)`.padStart(12))}`;
 
                     possibilities[guessNum + 1].newWords = newPossibilities;
                     possibilities[guessNum + 1].usedWords = usedPossibilities;
