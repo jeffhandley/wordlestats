@@ -39,7 +39,7 @@ function loadWordleStats(callback) {
 
     if (dictionary !== true || history !== true || todaysPuzzle !== true || playerStats !== true) {
       message = message || 'WordleStats Failed to Load.';
-      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? 'Yes' : 'No')} - History: ${(!!history ? 'Yes' : 'No')} - Today's Puzzle: ${(!!todaysPuzzle ? 'Yes' : 'No')} - Player Stats: ${(!!playerStats ? 'Yes' : 'No')}`);
+      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? 'Yes' : 'No')}. History: ${(!!history ? 'Yes' : 'No')}. Puzzle: ${(!!todaysPuzzle ? 'Yes' : 'No')}. Stats: ${(!!playerStats ? 'Yes' : 'No')}`);
     }
     else {
       message = message || 'WordleStats Loaded.';
@@ -69,7 +69,7 @@ function loadWordleStats(callback) {
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => {
-      displayWordleStatsLoadState('WordleStats failed to load. Could not download the dictionary of legal words.');
+      displayWordleStatsLoadState('WordleStats failed to load the dictionary.');
       callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
     };
 
@@ -95,7 +95,7 @@ function loadWordleStats(callback) {
       const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
       const fetchPuzzleHistoryError = () => {
-        displayWordleStatsLoadState('WordleStats failed to load. Could not download the puzzle history.');
+        displayWordleStatsLoadState('WordleStats failed to load puzzle history.');
         callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
       };
 
@@ -121,7 +121,7 @@ function loadWordleStats(callback) {
         const todaysPuzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${todayIso}.json`;
         const fetchTodaysPuzzle = new XMLHttpRequest();
         const fetchTodaysPuzzleError = () => {
-          displayWordleStatsLoadState('WordleStats failed to load. Could not download today\'s puzzle.');
+          displayWordleStatsLoadState('WordleStats failed to load today\'s puzzle.');
           callback(`Failed to fetch today's puzzle from '${todaysPuzzleUrl}'`);
         };
 
@@ -205,7 +205,7 @@ function loadWordleStats(callback) {
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
         const fetchStatsError = () => {
-          displayWordleStatsLoadState('WordleStats failed to load. Could not download player stats.');
+          displayWordleStatsLoadState('WordleStats failed to load player stats.');
           callback(`Failed to fetch stats from '${statsUrl}'`);
         };
 
