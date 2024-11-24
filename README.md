@@ -10,6 +10,7 @@ Instead of using the Share button built into Wordle, the 'Share with WordleStats
 
 Here's an example of what gets shared via WordleStats:
 
+```
 #Wordle 1,252 4/6*
 
 ⬛⬛⬛⬛⬛ 4,223 (3,850 new)
@@ -26,6 +27,7 @@ Games: 729 | Streak: 109 | Max: 151
 5️⃣ ⠿⠿⠿⠿⠿⠿⠗ [20﹪] 144
 6️⃣ ⠿ [3﹪] 24
 ⛔ ⠗ [2﹪] 12
+```
 
 ### Check Guess with WordleStats
 
@@ -53,10 +55,10 @@ The game board state and player stats are extracted from the game's UI and by ma
 
 Other game data might be included in the `games/state` response, depending on which NYTimes games you play. The requests to these addresses must be made using JavaScript injected into the Wordle game's page so that the requests include the appropriate cookies and referrer on the request.
 
-In addition to loading data from the Wordle game itself, WordleStats also provides some of its own data. The full dictionary of legal Wordle words is saved in this repository at [`src/Stats/dictionary.json`](/jeffhandley/wordlestats/blob/main/src/Stats/dictionary.json). To power the WordleStats features that understand what words have already appeared as solutions, the history of all puzzles is also included in this repository at **SPOILER WARNING** [`src/PuzzleCollector/puzzles.json`](/jeffhandley/wordlestats/blob/main/src/PuzzleCollector/puzzles.json). Both of these sets of data are downloaded when running the shortcuts.
+In addition to loading data from the Wordle game itself, WordleStats also provides some of its own data. The full dictionary of legal Wordle words is saved in this repository at [`src/Stats/dictionary.json`](/jeffhandley/wordlestats/blob/main/src/Stats/dictionary.json). To power the WordleStats features that understand what words have already appeared as solutions, the history of all puzzles is also included in this repository at **[SPOILER WARNING]** [`src/PuzzleCollector/puzzles.json`](/jeffhandley/wordlestats/blob/main/src/PuzzleCollector/puzzles.json). Both of these sets of data are downloaded when running the shortcuts.
 
 With this design for the shortcuts, permissions must be granted when using them for the first time. You will be prompted to allow the shortcut to download data from `https://raw.githubusercontent.com`, and also to interact with `https://www.nytimes.com/`. Both requests must be granted for the shortcuts to work.
 
-If you'd like to review the JavaScript code that drives all of the functionality, check out [`src/Stats/loadWordleStats.js`](/jeffhandley/wordlestats/blog/main/src/Stats/loadWordleStats.js). Note that this code is written to be compatible with iOS Safari. Unfortunately, `async`/`await` and `fetch` are not available, so classic `XMLHttpRequest` and `JSON.parse` code is needed.
+If you'd like to review the JavaScript code that drives all of the functionality, check out [`src/Stats/loadWordleStats.js`](/jeffhandley/wordlestats/blob/main/src/Stats/loadWordleStats.js). Note that this code is written to be compatible with iOS Safari. Unfortunately, `async`/`await` and `fetch` are not available, so classic `XMLHttpRequest` and `JSON.parse` code is needed.
 
-Each day's puzzle is collected into this repository using a GitHub Action that invokes the [`src/PuzzleCollector/Program.cs`](PuzzleCollector) console application written in C#/.NET.
+Each day's puzzle is collected into this repository using a [GitHub Action](/jeffhandley/wordlestats/blob/main/.github/workflows/puzzle-collector.yml) that invokes the [`src/PuzzleCollector/Program.cs`](/jeffhandley/wordlestats/blob/main/src/PuzzleCollector/Program.cs) console application written in C#/.NET.
