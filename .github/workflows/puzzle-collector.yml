@@ -3,6 +3,8 @@ name: Run Puzzle Collector
 on:
   push:
     branches: [ main ]
+    paths:
+      - '/src/PuzzleCollector/**'
 
   schedule:
     - cron: '1 * * * *'
