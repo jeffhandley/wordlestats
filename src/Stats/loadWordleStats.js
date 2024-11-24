@@ -1,42 +1,64 @@
-let getNumberBlock = (num) =>
-  num == 1 ? '1️⃣':
-  num == 2 ? '2️⃣':
-  num == 3 ? '3️⃣':
-  num == 4 ? '4️⃣':
-  num == 5 ? '5️⃣':
-  num == 6 ? '6️⃣':
-             '⛔';
-
-function displayStatsLoaded(lastPuzzleNum, lastPuzzleDate, thisPuzzleNum, thisPuzzleDate) {
-  let statsLoadedText = `Today's Puzzle: ${thisPuzzleDate} (#${thisPuzzleNum.toLocaleString()})`;
-
-  if (lastPuzzleNum < thisPuzzleNum - 1) {
-    statsLoadedText = `WordleStats - Last Known Puzzle: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />${statsLoadedText}`;
-  }
-  else {
-    statsLoadedText = `WordleStats Loaded<br />${statsLoadedText}`;
-  }
-
-  displayMessageInHeader(statsLoadedText);
-}
-
-function displayMessageInHeader(message) {
-  const header = document.querySelector("header section menu");
-  if (!header) return;
-
-  const statsHeader = header.firstChild.cloneNode();
-  statsHeader.style = "color:var(--color-tone-1); text-align:right;";
-  statsHeader.innerHTML = message;
-
-  header.replaceWith(statsHeader);
-}
-
 function loadWordleStats(callback) {
   window.wordleStats = window.wordleStats || {};
 
   if (!callback || typeof callback != 'function') {
     callback = () => {};
   }
+
+  let getNumberBlock = (num) =>
+    num == 1 ? '1️⃣':
+    num == 2 ? '2️⃣':
+    num == 3 ? '3️⃣':
+    num == 4 ? '4️⃣':
+    num == 5 ? '5️⃣':
+    num == 6 ? '6️⃣':
+               '⛔';
+
+  let displayHeader = (headerHtml) => {
+    let wordleStatsHeader = document.querySelector("#wordleStatsHeader");
+
+    if (!wordleStatsHeader) {
+      const header = document.querySelector("header section menu");
+      if (!header) return;
+
+      wordleStatsHeader = header.firstChild.cloneNode();
+      wordleStatsHeader.id = 'wordleStatsHeader';
+      wordleStatsHeader.style = "color:var(--color-tone-1); text-align:right;";
+
+      header.replaceWith(wordleStatsHeader);
+    }
+
+    wordleStatsHeader.innerHTML = headerHtml;
+  };
+
+  let displayWordleStatsLoadState = (message) => {
+    const dictionary = !!window.wordleStats.dictionary;
+    const history = !!window.wordleStats.puzzleHistory;
+    const todaysPuzzle = !!window.wordleStats.todaysPuzzle;
+    const playerStats = !!window.wordleStats.stats;
+
+    if (dictionary !== true || history !== true || todaysPuzzle !== true || playerStats !== true) {
+      message = message || 'WordleStats Failed to Load.';
+      displayHeader(`${message}<br />Dictionary: ${(!!dictionary ? 'Yes' : 'No')} - History: ${(!!history ? 'Yes' : 'No')} - Today's Puzzle: ${(!!todaysPuzzle ? 'Yes' : 'No')} - Player Stats: ${(!!playerStats ? 'Yes' : 'No')}`);
+    }
+    else {
+      message = message || 'WordleStats Loaded.';
+
+      const { puzzleNum: todaysPuzzleNum, puzzleDate: todaysPuzzleDate } = window.wordleStats.todaysPuzzle;
+      const { puzzleNum: lastPuzzleNum, puzzleDate: lastPuzzleDate } = window.wordleStats.lastPuzzle;
+
+      let loadStateHtml = `Today's Puzzle: ${todaysPuzzleDate} (#${todaysPuzzleNum.toLocaleString()})`
+
+      if (lastPuzzleNum < todaysPuzzleNum - 1) {
+        loadStateHtml = `${message} Last Known Puzzle: ${lastPuzzleDate} (#${lastPuzzleNum.toLocaleString()})<br />${loadStateHtml}`;
+      }
+      else {
+        loadStateHtml = `${message}<br />${loadStateHtml}`;
+      }
+
+      displayHeader(loadStateHtml);
+    }
+  };
 
   const now = new Date();
   const nowIso = now.toISOString();
@@ -47,7 +69,7 @@ function loadWordleStats(callback) {
 
     const fetchDictionary = new XMLHttpRequest();
     const fetchDictionaryError = () => {
-      displayMessageInHeader('WordleStats failed to load. Could not download the dictionary of legal words.');
+      displayWordleStatsLoadState('WordleStats failed to load. Could not download the dictionary of legal words.');
       callback(`Failed to fetch the dictionary from '${dictionaryUrl}'`);
     };
 
@@ -73,7 +95,7 @@ function loadWordleStats(callback) {
       const puzzleHistoryUrl = `https://raw.githubusercontent.com/jeffhandley/wordlestats/refs/heads/main/src/PuzzleCollector/puzzles.json?${nowIso}`;
       const fetchPuzzleHistory = new XMLHttpRequest();
       const fetchPuzzleHistoryError = () => {
-        displayMessageInHeader('WordleStats failed to load. Could not download the puzzle history.');
+        displayWordleStatsLoadState('WordleStats failed to load. Could not download the puzzle history.');
         callback(`Failed to fetch puzzle history from '${puzzleHistoryUrl}'`);
       };
 
@@ -99,7 +121,7 @@ function loadWordleStats(callback) {
         const todaysPuzzleUrl = `https://www.nytimes.com/svc/wordle/v2/${todayIso}.json`;
         const fetchTodaysPuzzle = new XMLHttpRequest();
         const fetchTodaysPuzzleError = () => {
-          displayMessageInHeader('WordleStats failed to load. Could not download today\'s puzzle.');
+          displayWordleStatsLoadState('WordleStats failed to load. Could not download today\'s puzzle.');
           callback(`Failed to fetch today's puzzle from '${todaysPuzzleUrl}'`);
         };
 
@@ -136,10 +158,54 @@ function loadWordleStats(callback) {
           window.wordleStats.puzzleHistory.shift();
         }
 
+        const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
+
+        window.wordleStats.lastPuzzle = {
+          puzzleNum: lastPuzzleNum,
+          puzzleDate: lastPuzzleDate
+        };
+
+        window.wordleStats.getCurrentGuess = () =>
+          [...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")]
+          .map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
+
+        window.wordleStats.checkGuess = (guess) => {
+          guess = (guess || '').toLowerCase().trim();
+
+          const match = window.wordleStats.puzzleHistory.filter(p => p.solution == guess)[0];
+          const guessCheckTitle = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
+
+          if (guess.length != 5) {
+            return {
+              title: guessCheckTitle,
+              text: (guess.length == 0 ? 'Enter a guess' : 'Not enough letters')
+            };
+          }
+
+          if (match) {
+            const { solution, days_since_launch: puzzleNum, print_date: puzzleDate } = match;
+
+            return {
+              title: guessCheckTitle,
+              text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`
+            };
+          }
+          else {
+            const isInDictionary = window.wordleStats.dictionary.includes(guess);
+
+            return {
+              title: guessCheckTitle,
+              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? ' It was NOT found in the dictionary though, so it might not be playable.' : ' It was found in the dictionary and should be playable.')}`
+            };
+          }
+        };
+
+        window.wordleStats.checkCurrentGuess = () => window.wordleStats.checkGuess(window.wordleStats.getCurrentGuess());
+
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
         const fetchStatsError = () => {
-          displayMessageInHeader('WordleStats failed to load. Could not download player stats.');
+          displayWordleStatsLoadState('WordleStats failed to load. Could not download player stats.');
           callback(`Failed to fetch stats from '${statsUrl}'`);
         };
 
@@ -212,37 +278,7 @@ function loadWordleStats(callback) {
             };
           }
 
-          window.wordleStats.getCurrentGuess = () =>
-            [...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")]
-            .map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
-
-          window.wordleStats.checkGuess = (guess) => {
-            guess = guess.toLowerCase().trim();
-
-            const { days_since_launch: lastPuzzleNum, print_date: lastPuzzleDate } = window.wordleStats.puzzleHistory[0];
-            const match = window.wordleStats.puzzleHistory.filter(p => p.solution == guess)[0];
-
-            const guessCheckTitle = `As of #${lastPuzzleNum.toLocaleString()} (${lastPuzzleDate})`;
-
-            if (match) {
-              const { solution, days_since_launch: puzzleNum, print_date: puzzleDate } = match;
-
-              return {
-                title: guessCheckTitle,
-                text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`
-              };
-            }
-            else {
-              return {
-                title: guessCheckTitle,
-                text: `"${guess.toUpperCase()}" has not been used.`
-              };
-            }
-          };
-
-          const lastPuzzle = window.wordleStats.puzzleHistory[0];
-          displayStatsLoaded(lastPuzzle.days_since_launch, lastPuzzle.print_date, puzzleNum, puzzleDate);
-
+          displayWordleStatsLoadState();
           callback(window.wordleStats);
 
           function getPercentages(guessStats) {
