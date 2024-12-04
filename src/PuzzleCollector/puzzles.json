@@ -1,4 +1,5 @@
 [
+  { "solution": "crypt", "print_date": "2024-12-04", "days_since_launch": 1264 },
   { "solution": "shaky", "print_date": "2024-12-03", "days_since_launch": 1263 },
   { "solution": "guile", "print_date": "2024-12-02", "days_since_launch": 1262 },
   { "solution": "mauve", "print_date": "2024-12-01", "days_since_launch": 1261 },
