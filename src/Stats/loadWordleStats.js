@@ -15,6 +15,8 @@ function loadWordleStats(callback) {
                '⛔';
 
   let displayHeader = (headerHtml) => {
+    headerHtml = headerHtml || '';
+
     let wordleStatsHeader = document.querySelector("#wordleStatsHeader");
 
     if (!wordleStatsHeader) {
@@ -30,6 +32,8 @@ function loadWordleStats(callback) {
 
     wordleStatsHeader.innerHTML = headerHtml;
   };
+
+  window.wordleStats.displayHeader = displayHeader;
 
   let displayWordleStatsLoadState = (message) => {
     const dictionary = !!window.wordleStats.dictionary;
@@ -200,7 +204,33 @@ function loadWordleStats(callback) {
           }
         };
 
-        window.wordleStats.checkCurrentGuess = () => window.wordleStats.checkGuess(window.wordleStats.getCurrentGuess());
+        let checkCurrentGuessInterval = null;
+
+        window.wordleStats.checkCurrentGuess = () => {
+          const result = window.wordleStats.checkGuess(window.wordleStats.getCurrentGuess());
+
+          if (checkCurrentGuessInterval == null) {
+            let previousGuess = null;
+
+            checkCurrentGuessInterval = window.setInterval(() => {
+              const guess = window.wordleStats.getCurrentGuess();
+
+              if (guess != previousGuess) {
+                previousGuess = guess;
+
+                if (guess && guess.length == 5) {
+                  const check = window.wordleStats.checkCurrentGuess();
+                  window.wordleStats.displayHeader(check.text.replace('\n\n', '<br />'));
+                }
+                else {
+                  window.wordleStats.displayHeader();
+                }
+              }
+            }, 100);
+          }
+
+          return result;
+        }
 
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
