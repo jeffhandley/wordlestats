@@ -207,29 +207,35 @@ function loadWordleStats(callback) {
         let checkCurrentGuessInterval = null;
 
         window.wordleStats.checkCurrentGuess = () => {
-          const result = window.wordleStats.checkGuess(window.wordleStats.getCurrentGuess());
+          const guess = window.wordleStats.getCurrentGuess();
+          const result = window.wordleStats.checkGuess(guess);
 
           if (checkCurrentGuessInterval == null) {
-            let previousGuess = null;
+            let previousCheckedGuess = null;
 
             checkCurrentGuessInterval = window.setInterval(() => {
-              const guess = window.wordleStats.getCurrentGuess();
+              console.log('previousCheckedGuess', previousCheckedGuess);
 
-              if (guess != previousGuess) {
-                previousGuess = guess;
+              const activeGuess = window.wordleStats.getCurrentGuess();
 
-                if (guess && guess.length == 5) {
-                  const check = window.wordleStats.checkCurrentGuess();
+              if (activeGuess != previousCheckedGuess) {
+                previousCheckedGuess = activeGuess;
+
+                if (activeGuess && activeGuess.length == 5) {
+                  const check = window.wordleStats.checkGuess(activeGuess);
                   window.wordleStats.displayHeader(check.text.replace('\n\n', '<br />'));
                 }
                 else {
-                  window.wordleStats.displayHeader();
+                  window.wordleStats.displayHeader('WordleStats ready...');
                 }
               }
             }, 100);
           }
 
-          return result;
+          return {
+            ...result,
+            guess: guess && guess.length == 5 ? guess : null
+          };
         }
 
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;

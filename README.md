@@ -35,7 +35,7 @@ Games: 729 | Streak: 109 | Max: 151
 
 ### Check Guess with WordleStats
 
-**[Install 'Check Guess with WordleStats'](https://www.icloud.com/shortcuts/811e0464e5924f85a887305767ca57c8)**
+**[Install 'Check Guess with WordleStats'](https://www.icloud.com/shortcuts/4478c0bd5aaa4728bfc33f93198b35e9)**
 
 Do you wish that Wordle would warn you if a guess has already appeared as a previous solution? The 'Check Guess with WordleStats' shortcut does just that!
 
