@@ -35,7 +35,14 @@ function loadWordleStats(callback) {
 
   window.wordleStats.displayHeader = displayHeader;
 
+  let lastLoadState = null;
+
   let displayWordleStatsLoadState = (message) => {
+    if (!message && lastLoadState) {
+      displayHeader(lastLoadState);
+      return;
+    }
+
     const dictionary = !!window.wordleStats.dictionary;
     const history = !!window.wordleStats.puzzleHistory;
     const todaysPuzzle = !!window.wordleStats.todaysPuzzle;
@@ -63,6 +70,8 @@ function loadWordleStats(callback) {
       displayHeader(loadStateHtml);
     }
   };
+
+  window.wordleStats.displayWordleStatsLoadState = displayWordleStatsLoadState;
 
   const now = new Date();
   const nowIso = now.toISOString();
@@ -171,7 +180,7 @@ function loadWordleStats(callback) {
 
         window.wordleStats.getCurrentGuess = () =>
           [...document.querySelectorAll("div[aria-label^='Row ']:has(div[data-state='empty'],div[data-state='tbd'])")]
-          .map(guess => guess.innerText.replace(/\n/g,'')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
+          .map(guess => guess.innerText.replaceAll('\n', '')).filter(guess => !!guess).map(guess => guess.toLowerCase())[0];
 
         window.wordleStats.checkGuess = (guess) => {
           guess = (guess || '').toLowerCase().trim();
@@ -214,11 +223,15 @@ function loadWordleStats(callback) {
             let previousCheckedGuess = null;
 
             checkCurrentGuessInterval = window.setInterval(() => {
-              console.log('previousCheckedGuess', previousCheckedGuess);
-
               const activeGuess = window.wordleStats.getCurrentGuess();
 
-              if (activeGuess != previousCheckedGuess) {
+              const { gameOver } = window.wordleStats.getGameState();
+
+              if (gameOver) {
+                window.wordleStats.displayWordleStatsLoadState();
+                window.clearInterval(checkCurrentGuessInterval);
+              }
+              else if (activeGuess != previousCheckedGuess) {
                 previousCheckedGuess = activeGuess;
 
                 if (activeGuess && activeGuess.length == 5) {
@@ -226,7 +239,7 @@ function loadWordleStats(callback) {
                   window.wordleStats.displayHeader(check.text.replace('\n\n', '<br />'));
                 }
                 else {
-                  window.wordleStats.displayHeader('WordleStats ready...');
+                  window.wordleStats.displayWordleStatsLoadState();
                 }
               }
             }, 100);
@@ -237,6 +250,26 @@ function loadWordleStats(callback) {
             guess: guess && guess.length == 5 ? guess : null
           };
         }
+
+        window.wordleStats.getGameState = () => {
+          const winningGuess = [...document.querySelectorAll("div[aria-label^='Row ']")]
+            .find(guess => guess.querySelectorAll("div[data-state='correct']").length == 5);
+
+          const remainingGuesses = [...document.querySelectorAll("div[aria-label^='Row ']")]
+            .filter(guess => guess.querySelectorAll("div[data-state='empty'],div[data-state='tbd']").length)
+            .length;
+
+          const hasWon = !!winningGuess;
+          const hasLost = !hasWon && !remainingGuesses;
+          const gameOver = hasWon || hasLost;
+
+          return {
+            remainingGuesses,
+            hasWon,
+            hasLost,
+            gameOver
+          };
+        };
 
         const statsUrl = `https://www.nytimes.com/svc/games/state/wordleV2/latests?puzzle_ids=${puzzleId}`;
         const fetchStats = new XMLHttpRequest();
