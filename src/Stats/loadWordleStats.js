@@ -311,7 +311,7 @@ function loadWordleStats(callback) {
             .join('\n');
 
           window.wordleStats.getStatsText = () =>
-            `Games: ${stats.gamesPlayed} | Streak: ${stats.currentStreak} | Max: ${stats.maxStreak}\n\n` +
+            `Streak: ${stats.currentStreak} | Max: ${stats.maxStreak} | Games: ${stats.gamesPlayed}\n\n` +
             window.wordleStats.getStats();
 
           window.wordleStats.statsText = window.wordleStats.getStatsText();
