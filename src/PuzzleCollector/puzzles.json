@@ -1,4 +1,5 @@
 [
+  { "solution": "crawl", "print_date": "2025-01-10", "days_since_launch": 1301 },
   { "solution": "wafer", "print_date": "2025-01-09", "days_since_launch": 1300 },
   { "solution": "draft", "print_date": "2025-01-08", "days_since_launch": 1299 },
   { "solution": "atlas", "print_date": "2025-01-07", "days_since_launch": 1298 },
