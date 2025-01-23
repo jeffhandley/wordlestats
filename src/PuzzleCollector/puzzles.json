@@ -1,4 +1,5 @@
 [
+  { "solution": "upper", "print_date": "2025-01-23", "days_since_launch": 1314 },
   { "solution": "reach", "print_date": "2025-01-22", "days_since_launch": 1313 },
   { "solution": "icing", "print_date": "2025-01-21", "days_since_launch": 1312 },
   { "solution": "squid", "print_date": "2025-01-20", "days_since_launch": 1311 },
