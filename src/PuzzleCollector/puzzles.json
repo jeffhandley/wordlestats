@@ -1,4 +1,5 @@
 [
+  { "solution": "hover", "print_date": "2025-03-01", "days_since_launch": 1351 },
   { "solution": "fuzzy", "print_date": "2025-02-28", "days_since_launch": 1350 },
   { "solution": "lodge", "print_date": "2025-02-27", "days_since_launch": 1349 },
   { "solution": "award", "print_date": "2025-02-26", "days_since_launch": 1348 },
