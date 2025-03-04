@@ -1,4 +1,5 @@
 [
+  { "solution": "check", "print_date": "2025-03-04", "days_since_launch": 1354 },
   { "solution": "spear", "print_date": "2025-03-03", "days_since_launch": 1353 },
   { "solution": "deity", "print_date": "2025-03-02", "days_since_launch": 1352 },
   { "solution": "hover", "print_date": "2025-03-01", "days_since_launch": 1351 },
