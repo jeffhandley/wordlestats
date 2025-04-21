@@ -1,4 +1,5 @@
 [
+  { "solution": "spate", "print_date": "2025-04-21", "days_since_launch": 1402 },
   { "solution": "patch", "print_date": "2025-04-20", "days_since_launch": 1401 },
   { "solution": "inbox", "print_date": "2025-04-19", "days_since_launch": 1400 },
   { "solution": "dirge", "print_date": "2025-04-18", "days_since_launch": 1399 },
