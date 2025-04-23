@@ -1,4 +1,5 @@
 [
+  { "solution": "ozone", "print_date": "2025-04-23", "days_since_launch": 1404 },
   { "solution": "artsy", "print_date": "2025-04-22", "days_since_launch": 1403 },
   { "solution": "spate", "print_date": "2025-04-21", "days_since_launch": 1402 },
   { "solution": "patch", "print_date": "2025-04-20", "days_since_launch": 1401 },
