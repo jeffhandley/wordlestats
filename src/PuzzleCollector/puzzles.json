@@ -1,4 +1,5 @@
 [
+  { "solution": "bongo", "print_date": "2025-05-14", "days_since_launch": 1425 },
   { "solution": "aware", "print_date": "2025-05-13", "days_since_launch": 1424 },
   { "solution": "bicep", "print_date": "2025-05-12", "days_since_launch": 1423 },
   { "solution": "dowel", "print_date": "2025-05-11", "days_since_launch": 1422 },
