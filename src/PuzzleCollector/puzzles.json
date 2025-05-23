@@ -1,4 +1,5 @@
 [
+  { "solution": "shuck", "print_date": "2025-05-23", "days_since_launch": 1434 },
   { "solution": "folio", "print_date": "2025-05-22", "days_since_launch": 1433 },
   { "solution": "alarm", "print_date": "2025-05-21", "days_since_launch": 1432 },
   { "solution": "borne", "print_date": "2025-05-20", "days_since_launch": 1431 },
