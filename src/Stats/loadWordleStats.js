@@ -14,7 +14,7 @@ function loadWordleStats(callback) {
     num == 6 ? '6️⃣':
                '⛔';
 
-  let displayHeader = (headerHtml) => {
+  let displayHeader = (headerHtml, headerColor) => {
     headerHtml = headerHtml || '';
 
     let wordleStatsHeader = document.querySelector("#wordleStatsHeader");
@@ -25,7 +25,7 @@ function loadWordleStats(callback) {
 
       wordleStatsHeader = header.firstChild.cloneNode();
       wordleStatsHeader.id = 'wordleStatsHeader';
-      wordleStatsHeader.style = "color:var(--color-tone-1); text-align:right;";
+      wordleStatsHeader.style = `color:var(--color-tone-1); text-align:right; background-color:'${headerColor ?? 'black'}';`;
 
       header.replaceWith(wordleStatsHeader);
     }
@@ -239,7 +239,7 @@ function loadWordleStats(callback) {
 
                 if (activeGuess && activeGuess.length == 5) {
                   const check = window.wordleStats.checkGuess(activeGuess);
-                  window.wordleStats.displayHeader(check.text.replace('\n\n', '<br />'));
+                  window.wordleStats.displayHeader(check.text.replace('\n\n', '<br />'), check.color);
                 }
                 else {
                   window.wordleStats.displayWordleStatsLoadState();
