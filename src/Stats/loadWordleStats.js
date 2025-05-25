@@ -191,7 +191,8 @@ function loadWordleStats(callback) {
           if (guess.length != 5) {
             return {
               title: guessCheckTitle,
-              text: (guess.length == 0 ? 'Enter a guess' : 'Not enough letters')
+              text: (guess.length == 0 ? 'Enter a guess' : 'Not enough letters'),
+              color: 'brown'
             };
           }
 
@@ -200,7 +201,8 @@ function loadWordleStats(callback) {
 
             return {
               title: guessCheckTitle,
-              text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`
+              text: `"${solution.toUpperCase()}" was #${puzzleNum.toLocaleString()} (${puzzleDate}).\n\nDo not play it.`,
+              color: 'darkred'
             };
           }
           else {
@@ -208,7 +210,8 @@ function loadWordleStats(callback) {
 
             return {
               title: guessCheckTitle,
-              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? '\n\nIt was NOT found in the word list though, so it might not be playable.' : '')}`
+              text: `"${guess.toUpperCase()}" has not been used.${(!isInDictionary ? '\n\nIt was NOT found in the word list though, so it might not be playable.' : '')}`,
+              color: isInDictionary ? 'darkgreen' : 'brown'
             };
           }
         };
