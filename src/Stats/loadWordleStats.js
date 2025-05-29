@@ -34,7 +34,6 @@ function loadWordleStats(callback) {
     wordleStatsHeader
         .parentElement
         .parentElement
-        .parentElement
         .style.backgroundColor = headerColor ?? 'unset';
   };
 
