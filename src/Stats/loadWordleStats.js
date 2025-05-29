@@ -25,12 +25,13 @@ function loadWordleStats(callback) {
 
       wordleStatsHeader = header.firstChild.cloneNode();
       wordleStatsHeader.id = 'wordleStatsHeader';
-      wordleStatsHeader.style = `color:var(--color-tone-1); text-align:right; background-color:'${headerColor ?? 'black'}';`;
+      wordleStatsHeader.style = 'color:var(--color-tone-1); text-align:right;';
 
       header.replaceWith(wordleStatsHeader);
     }
 
     wordleStatsHeader.innerHTML = headerHtml;
+    wordleStatsHeader.style.backgroundColor = headerColor;
   };
 
   window.wordleStats.displayHeader = displayHeader;
