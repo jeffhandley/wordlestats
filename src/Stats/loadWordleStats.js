@@ -31,7 +31,11 @@ function loadWordleStats(callback) {
     }
 
     wordleStatsHeader.innerHTML = headerHtml;
-    wordleStatsHeader.parentElement.parentElement.style.backgroundColor = headerColor ?? 'unset';
+    wordleStatsHeader
+        .parentElement
+        .parentElement
+        .parentElement
+        .style.backgroundColor = headerColor ?? 'unset';
   };
 
   window.wordleStats.displayHeader = displayHeader;
