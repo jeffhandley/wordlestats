@@ -31,7 +31,7 @@ function loadWordleStats(callback) {
     }
 
     wordleStatsHeader.innerHTML = headerHtml;
-    wordleStatsHeader.style.backgroundColor = headerColor;
+    wordleStatsHeader.parentElement.style.backgroundColor = headerColor ?? 'black';
   };
 
   window.wordleStats.displayHeader = displayHeader;
