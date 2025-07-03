@@ -1,4 +1,5 @@
 [
+  { "solution": "poppy", "print_date": "2025-07-03", "days_since_launch": 1475 },
   { "solution": "incur", "print_date": "2025-07-02", "days_since_launch": 1474 },
   { "solution": "moldy", "print_date": "2025-07-01", "days_since_launch": 1473 },
   { "solution": "blink", "print_date": "2025-06-30", "days_since_launch": 1472 },
