@@ -1,4 +1,5 @@
 [
+  { "solution": "stork", "print_date": "2025-08-05", "days_since_launch": 1508 },
   { "solution": "rigid", "print_date": "2025-08-04", "days_since_launch": 1507 },
   { "solution": "lumpy", "print_date": "2025-08-03", "days_since_launch": 1506 },
   { "solution": "daunt", "print_date": "2025-08-02", "days_since_launch": 1505 },
