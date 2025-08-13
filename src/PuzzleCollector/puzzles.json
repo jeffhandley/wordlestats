@@ -1,4 +1,5 @@
 [
+  { "solution": "kefir", "print_date": "2025-08-13", "days_since_launch": 1516 },
   { "solution": "nomad", "print_date": "2025-08-12", "days_since_launch": 1515 },
   { "solution": "south", "print_date": "2025-08-11", "days_since_launch": 1514 },
   { "solution": "minty", "print_date": "2025-08-10", "days_since_launch": 1513 },
