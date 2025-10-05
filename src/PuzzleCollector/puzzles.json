@@ -1,4 +1,5 @@
 [
+  { "solution": "plane", "print_date": "2025-10-05", "days_since_launch": 1569 },
   { "solution": "relay", "print_date": "2025-10-04", "days_since_launch": 1568 },
   { "solution": "spasm", "print_date": "2025-10-03", "days_since_launch": 1567 },
   { "solution": "width", "print_date": "2025-10-02", "days_since_launch": 1566 },
