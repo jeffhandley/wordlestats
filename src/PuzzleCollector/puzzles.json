@@ -1,4 +1,5 @@
 [
+  { "solution": "tulip", "print_date": "2025-12-04", "days_since_launch": 1629 },
   { "solution": "haste", "print_date": "2025-12-03", "days_since_launch": 1628 },
   { "solution": "cacti", "print_date": "2025-12-02", "days_since_launch": 1627 },
   { "solution": "leach", "print_date": "2025-12-01", "days_since_launch": 1626 },
