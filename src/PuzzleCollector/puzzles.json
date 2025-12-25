@@ -1,4 +1,5 @@
 [
+  { "solution": "prism", "print_date": "2025-12-25", "days_since_launch": 1650 },
   { "solution": "spool", "print_date": "2025-12-24", "days_since_launch": 1649 },
   { "solution": "glint", "print_date": "2025-12-23", "days_since_launch": 1648 },
   { "solution": "conch", "print_date": "2025-12-22", "days_since_launch": 1647 },
