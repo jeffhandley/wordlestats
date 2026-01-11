@@ -1,4 +1,5 @@
 [
+  { "solution": "quark", "print_date": "2026-01-11", "days_since_launch": 1667 },
   { "solution": "manic", "print_date": "2026-01-10", "days_since_launch": 1666 },
   { "solution": "eight", "print_date": "2026-01-09", "days_since_launch": 1665 },
   { "solution": "blast", "print_date": "2026-01-08", "days_since_launch": 1664 },
