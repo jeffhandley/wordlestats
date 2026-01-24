@@ -1,4 +1,5 @@
 [
+  { "solution": "cliff", "print_date": "2026-01-24", "days_since_launch": 1680 },
   { "solution": "baron", "print_date": "2026-01-23", "days_since_launch": 1679 },
   { "solution": "clink", "print_date": "2026-01-22", "days_since_launch": 1678 },
   { "solution": "cubic", "print_date": "2026-01-21", "days_since_launch": 1677 },
