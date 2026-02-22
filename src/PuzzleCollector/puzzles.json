@@ -1,4 +1,5 @@
 [
+  { "solution": "guava", "print_date": "2026-02-22", "days_since_launch": 1709 },
   { "solution": "awake", "print_date": "2026-02-21", "days_since_launch": 1708 },
   { "solution": "stank", "print_date": "2026-02-20", "days_since_launch": 1707 },
   { "solution": "hoist", "print_date": "2026-02-19", "days_since_launch": 1706 },
