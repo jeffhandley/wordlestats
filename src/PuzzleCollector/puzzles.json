@@ -1,4 +1,5 @@
 [
+  { "solution": "sober", "print_date": "2026-04-02", "days_since_launch": 1748 },
   { "solution": "fizzy", "print_date": "2026-04-01", "days_since_launch": 1747 },
   { "solution": "swamp", "print_date": "2026-03-31", "days_since_launch": 1746 },
   { "solution": "comet", "print_date": "2026-03-30", "days_since_launch": 1745 },
