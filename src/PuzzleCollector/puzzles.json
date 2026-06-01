@@ -1,4 +1,5 @@
 [
+  { "solution": "chili", "print_date": "2026-06-01", "days_since_launch": 1808 },
   { "solution": "etude", "print_date": "2026-05-31", "days_since_launch": 1807 },
   { "solution": "smile", "print_date": "2026-05-30", "days_since_launch": 1806 },
   { "solution": "clang", "print_date": "2026-05-29", "days_since_launch": 1805 },
