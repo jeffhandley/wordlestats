@@ -1,4 +1,5 @@
 [
+  { "solution": "quell", "print_date": "2026-06-13", "days_since_launch": 1820 },
   { "solution": "break", "print_date": "2026-06-12", "days_since_launch": 1819 },
   { "solution": "testy", "print_date": "2026-06-11", "days_since_launch": 1818 },
   { "solution": "align", "print_date": "2026-06-10", "days_since_launch": 1817 },
