@@ -1,4 +1,5 @@
 [
+  { "solution": "broil", "print_date": "2026-06-15", "days_since_launch": 1822 },
   { "solution": "sepia", "print_date": "2026-06-14", "days_since_launch": 1821 },
   { "solution": "quell", "print_date": "2026-06-13", "days_since_launch": 1820 },
   { "solution": "break", "print_date": "2026-06-12", "days_since_launch": 1819 },
