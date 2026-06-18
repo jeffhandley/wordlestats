@@ -1,4 +1,5 @@
 [
+  { "solution": "entry", "print_date": "2026-06-18", "days_since_launch": 1825 },
   { "solution": "token", "print_date": "2026-06-17", "days_since_launch": 1824 },
   { "solution": "amaze", "print_date": "2026-06-16", "days_since_launch": 1823 },
   { "solution": "broil", "print_date": "2026-06-15", "days_since_launch": 1822 },
