@@ -1,4 +1,5 @@
 [
+  { "solution": "puppy", "print_date": "2026-06-30", "days_since_launch": 1837 },
   { "solution": "crude", "print_date": "2026-06-29", "days_since_launch": 1836 },
   { "solution": "emcee", "print_date": "2026-06-28", "days_since_launch": 1835 },
   { "solution": "scoop", "print_date": "2026-06-27", "days_since_launch": 1834 },
