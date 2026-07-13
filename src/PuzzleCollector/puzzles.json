@@ -1,4 +1,5 @@
 [
+  { "solution": "stout", "print_date": "2026-07-13", "days_since_launch": 1850 },
   { "solution": "clack", "print_date": "2026-07-12", "days_since_launch": 1849 },
   { "solution": "avian", "print_date": "2026-07-11", "days_since_launch": 1848 },
   { "solution": "canal", "print_date": "2026-07-10", "days_since_launch": 1847 },
