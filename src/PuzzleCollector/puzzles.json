@@ -1,4 +1,5 @@
 [
+  { "solution": "putty", "print_date": "2026-07-24", "days_since_launch": 1861 },
   { "solution": "orbit", "print_date": "2026-07-23", "days_since_launch": 1860 },
   { "solution": "lorry", "print_date": "2026-07-22", "days_since_launch": 1859 },
   { "solution": "shill", "print_date": "2026-07-21", "days_since_launch": 1858 },
