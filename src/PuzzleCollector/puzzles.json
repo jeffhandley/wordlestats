@@ -1,4 +1,5 @@
 [
+  { "solution": "poser", "print_date": "2026-07-27", "days_since_launch": 1864 },
   { "solution": "grape", "print_date": "2026-07-26", "days_since_launch": 1863 },
   { "solution": "aloha", "print_date": "2026-07-25", "days_since_launch": 1862 },
   { "solution": "putty", "print_date": "2026-07-24", "days_since_launch": 1861 },
