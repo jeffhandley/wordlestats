@@ -1,4 +1,5 @@
 [
+  { "solution": "purse", "print_date": "2026-07-31", "days_since_launch": 1868 },
   { "solution": "flume", "print_date": "2026-07-30", "days_since_launch": 1867 },
   { "solution": "valve", "print_date": "2026-07-29", "days_since_launch": 1866 },
   { "solution": "sonar", "print_date": "2026-07-28", "days_since_launch": 1865 },
