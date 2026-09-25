@@ -1,4 +1,5 @@
 [
+  { "solution": "copse", "print_date": "2026-09-25", "days_since_launch": 1924 },
   { "solution": "messy", "print_date": "2026-09-24", "days_since_launch": 1923 },
   { "solution": "forth", "print_date": "2026-09-23", "days_since_launch": 1922 },
   { "solution": "stoke", "print_date": "2026-09-22", "days_since_launch": 1921 },
