@@ -1,4 +1,5 @@
 [
+  { "solution": "scuba", "print_date": "2026-09-29", "days_since_launch": 1928 },
   { "solution": "trunk", "print_date": "2026-09-28", "days_since_launch": 1927 },
   { "solution": "sloop", "print_date": "2026-09-27", "days_since_launch": 1926 },
   { "solution": "elegy", "print_date": "2026-09-26", "days_since_launch": 1925 },
