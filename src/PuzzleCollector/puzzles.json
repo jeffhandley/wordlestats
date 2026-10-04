@@ -1,4 +1,5 @@
 [
+  { "solution": "shack", "print_date": "2026-10-04", "days_since_launch": 1933 },
   { "solution": "peeve", "print_date": "2026-10-03", "days_since_launch": 1932 },
   { "solution": "usury", "print_date": "2026-10-02", "days_since_launch": 1931 },
   { "solution": "ritzy", "print_date": "2026-10-01", "days_since_launch": 1930 },
