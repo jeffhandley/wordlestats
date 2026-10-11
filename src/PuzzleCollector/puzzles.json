@@ -1,4 +1,5 @@
 [
+  { "solution": "uncap", "print_date": "2026-10-11", "days_since_launch": 1940 },
   { "solution": "bumpy", "print_date": "2026-10-10", "days_since_launch": 1939 },
   { "solution": "major", "print_date": "2026-10-09", "days_since_launch": 1938 },
   { "solution": "strew", "print_date": "2026-10-08", "days_since_launch": 1937 },
