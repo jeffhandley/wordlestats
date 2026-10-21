@@ -1,4 +1,5 @@
 [
+  { "solution": "penny", "print_date": "2026-10-21", "days_since_launch": 1950 },
   { "solution": "wrest", "print_date": "2026-10-20", "days_since_launch": 1949 },
   { "solution": "stink", "print_date": "2026-10-19", "days_since_launch": 1948 },
   { "solution": "adorn", "print_date": "2026-10-18", "days_since_launch": 1947 },
