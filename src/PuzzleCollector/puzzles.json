@@ -1,4 +1,5 @@
 [
+  { "solution": "dress", "print_date": "2026-10-25", "days_since_launch": 1954 },
   { "solution": "holey", "print_date": "2026-10-24", "days_since_launch": 1953 },
   { "solution": "trill", "print_date": "2026-10-23", "days_since_launch": 1952 },
   { "solution": "reset", "print_date": "2026-10-22", "days_since_launch": 1951 },
