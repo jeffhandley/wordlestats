@@ -1,4 +1,5 @@
 [
+  { "solution": "yahoo", "print_date": "2026-10-31", "days_since_launch": 1960 },
   { "solution": "slide", "print_date": "2026-10-30", "days_since_launch": 1959 },
   { "solution": "motor", "print_date": "2026-10-29", "days_since_launch": 1958 },
   { "solution": "grist", "print_date": "2026-10-28", "days_since_launch": 1957 },
