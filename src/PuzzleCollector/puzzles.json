@@ -1,4 +1,5 @@
 [
+  { "solution": "scoot", "print_date": "2026-11-02", "days_since_launch": 1962 },
   { "solution": "viper", "print_date": "2026-11-01", "days_since_launch": 1961 },
   { "solution": "yahoo", "print_date": "2026-10-31", "days_since_launch": 1960 },
   { "solution": "slide", "print_date": "2026-10-30", "days_since_launch": 1959 },
